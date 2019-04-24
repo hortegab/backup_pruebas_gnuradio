@@ -30,7 +30,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(8, 8)</value>
+      <value>(8, 12)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -101,7 +101,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(368, 12)</value>
+      <value>(256, 12)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -124,11 +124,11 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(600, 12)</value>
+      <value>(1072, 356)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -155,7 +155,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(520, 12)</value>
+      <value>(576, 12)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -167,7 +167,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>2.0*fm</value>
+      <value>DeltaF+fm</value>
     </param>
   </block>
   <block>
@@ -182,7 +182,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(752, 12)</value>
+      <value>(448, 12)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -209,7 +209,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(832, 12)</value>
+      <value>(512, 12)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -236,7 +236,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(680, 12)</value>
+      <value>(384, 12)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -263,7 +263,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(440, 12)</value>
+      <value>(320, 12)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -337,7 +337,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(176, 12)</value>
+      <value>(168, 12)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -372,7 +372,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(408, 412)</value>
+      <value>(456, 268)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -431,7 +431,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(0, 124)</value>
+      <value>(16, 84)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -549,7 +549,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(432, 492)</value>
+      <value>(480, 348)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -588,7 +588,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(416, 544)</value>
+      <value>(456, 400)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -631,7 +631,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(264, 428)</value>
+      <value>(336, 284)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -682,7 +682,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(272, 156)</value>
+      <value>(344, 116)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -691,6 +691,57 @@
     <param>
       <key>id</key>
       <value>blocks_multiply_const_vxx_0_0_0</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>float</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>vlen</key>
+      <value>1</value>
+    </param>
+  </block>
+  <block>
+    <key>blocks_multiply_const_vxx</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>const</key>
+      <value>2</value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(336, 396)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>180</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>blocks_multiply_const_vxx_0_0_0_0</value>
     </param>
     <param>
       <key>type</key>
@@ -733,7 +784,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(432, 140)</value>
+      <value>(504, 100)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -776,7 +827,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(272, 12)</value>
+      <value>(640, 12)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -859,7 +910,7 @@
     </param>
     <param>
       <key>label1</key>
-      <value>Mensaje emitido</value>
+      <value>m(t)</value>
     </param>
     <param>
       <key>marker1</key>
@@ -907,7 +958,7 @@
     </param>
     <param>
       <key>label2</key>
-      <value>Mensaje Recibido</value>
+      <value>v(t)</value>
     </param>
     <param>
       <key>marker2</key>
@@ -1091,7 +1142,7 @@
     </param>
     <param>
       <key>name</key>
-      <value>"Demodulacion con PLL"</value>
+      <value>"De FM con PLL"</value>
     </param>
     <param>
       <key>nconnections</key>
@@ -1226,7 +1277,7 @@
     </param>
     <param>
       <key>label1</key>
-      <value>Mensaje emitido</value>
+      <value>m(t)</value>
     </param>
     <param>
       <key>marker1</key>
@@ -1274,7 +1325,7 @@
     </param>
     <param>
       <key>label2</key>
-      <value>Mensaje Recibido</value>
+      <value>v(t)</value>
     </param>
     <param>
       <key>marker2</key>
@@ -1458,7 +1509,7 @@
     </param>
     <param>
       <key>name</key>
-      <value>"Demodulacion con discriminador"</value>
+      <value>"De FM con circuitos de pendiente"</value>
     </param>
     <param>
       <key>nconnections</key>
@@ -1593,7 +1644,7 @@
     </param>
     <param>
       <key>label1</key>
-      <value>Mensaje emitido</value>
+      <value>m(t)</value>
     </param>
     <param>
       <key>marker1</key>
@@ -1641,7 +1692,7 @@
     </param>
     <param>
       <key>label2</key>
-      <value>Mensaje Recibido</value>
+      <value>v(t)</value>
     </param>
     <param>
       <key>marker2</key>
@@ -1825,7 +1876,7 @@
     </param>
     <param>
       <key>name</key>
-      <value>"Demodulacion con discriminador UMD"</value>
+      <value>"De FM Homodino"</value>
     </param>
     <param>
       <key>nconnections</key>
@@ -1904,7 +1955,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(676, 224)</value>
+      <value>(692, 192)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1931,7 +1982,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(220, 224)</value>
+      <value>(284, 184)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1958,7 +2009,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(220, 320)</value>
+      <value>(236, 176)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1985,7 +2036,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(172, 320)</value>
+      <value>(188, 168)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2012,7 +2063,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(124, 320)</value>
+      <value>(140, 168)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2242,7 +2293,7 @@
   </connection>
   <connection>
     <source_block_id>b_discriminador_frec_umd_cf_0</source_block_id>
-    <sink_block_id>vs_0_0_1_0_0</sink_block_id>
+    <sink_block_id>blocks_multiply_const_vxx_0_0_0_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -2255,6 +2306,12 @@
   <connection>
     <source_block_id>blocks_multiply_const_vxx_0_0_0</source_block_id>
     <sink_block_id>blocks_vco_c_0_0_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>blocks_multiply_const_vxx_0_0_0_0</source_block_id>
+    <sink_block_id>vs_0_0_1_0_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
