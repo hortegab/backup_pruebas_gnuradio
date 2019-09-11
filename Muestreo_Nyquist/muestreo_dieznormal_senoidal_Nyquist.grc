@@ -164,7 +164,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(504, 12)</value>
+      <value>(480, 12)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -176,7 +176,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>4</value>
+      <value>12</value>
     </param>
   </block>
   <block>
@@ -398,53 +398,6 @@
     </param>
   </block>
   <block>
-    <key>E3TRadio_diezmoppenh3_ff</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(432, 132)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>E3TRadio_diezmoppenh3_ff_0</value>
-    </param>
-    <param>
-      <key>M</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>N</key>
-      <value>Kd</value>
-    </param>
-  </block>
-  <block>
     <key>analog_sig_source_x</key>
     <param>
       <key>amp</key>
@@ -531,7 +484,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(672, 324)</value>
+      <value>(696, 316)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -582,11 +535,11 @@
     </param>
     <param>
       <key>samp_rate_audio</key>
-      <value>float(samp_rate)</value>
+      <value>samp_rate_d</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(672, 436)</value>
+      <value>(696, 428)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -670,6 +623,67 @@
     <param>
       <key>vlen</key>
       <value>1</value>
+    </param>
+  </block>
+  <block>
+    <key>epy_block</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_io_cache</key>
+      <value>('e_diezmad_ff', 'decimator', [('paso', '2')], [('0', 'float', 1)], [('0', 'float', 1)], 'Elimins paso-1 muestras, de manera que solo quedan vigentes las muestras separadas en paso muestras', ['paso'])</value>
+    </param>
+    <param>
+      <key>_source_code</key>
+      <value>import numpy as np
+from gnuradio import gr
+
+class decimator(gr.decim_block):
+    """Elimins paso-1 muestras, de manera que solo quedan vigentes las muestras separadas en paso muestras"""
+    def __init__(self, paso=2):
+        gr.decim_block.__init__(self,
+            name="e_diezmad_ff",
+            in_sig=[np.float32],
+            out_sig=[np.float32], decim=paso)
+
+        # variables externas
+	self.paso = paso
+	
+    def work(self, input_items, output_items):
+        # traduccion a algo que podemos manejar mejor
+        in0 = input_items[0]
+        out0 = output_items[0]
+        # Logica principal
+	out0[:] = in0[::self.paso]
+        return len(output_items[0])
+
+</value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(424, 140)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>epy_block_0_0</value>
+    </param>
+    <param>
+      <key>paso</key>
+      <value>Kd</value>
     </param>
   </block>
   <block>
@@ -1095,7 +1109,7 @@
     </param>
     <param>
       <key>size</key>
-      <value>1024/8</value>
+      <value>1024/32</value>
     </param>
     <param>
       <key>srate</key>
@@ -1462,7 +1476,7 @@
     </param>
     <param>
       <key>size</key>
-      <value>1024/8</value>
+      <value>1024/32</value>
     </param>
     <param>
       <key>srate</key>
@@ -1560,7 +1574,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(572, 216)</value>
+      <value>(652, 216)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1614,7 +1628,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(496, 356)</value>
+      <value>(448, 348)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1641,7 +1655,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(504, 468)</value>
+      <value>(456, 460)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1684,14 +1698,8 @@
     </param>
   </block>
   <connection>
-    <source_block_id>E3TRadio_diezmoppenh3_ff_0</source_block_id>
-    <sink_block_id>virtual_sink_0_1_0_0_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
     <source_block_id>analog_sig_source_x_0</source_block_id>
-    <sink_block_id>E3TRadio_diezmoppenh3_ff_0</sink_block_id>
+    <sink_block_id>epy_block_0_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -1704,6 +1712,12 @@
   <connection>
     <source_block_id>blocks_delay_0</source_block_id>
     <sink_block_id>qtgui_time_sink_x_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>epy_block_0_0</source_block_id>
+    <sink_block_id>virtual_sink_0_1_0_0_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
