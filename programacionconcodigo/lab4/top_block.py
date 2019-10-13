@@ -3,7 +3,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: Top Block
-# Generated: Thu Oct 10 19:34:16 2019
+# Generated: Thu Oct 10 21:29:38 2019
 ##################################################
 
 if __name__ == '__main__':
@@ -16,17 +16,21 @@ if __name__ == '__main__':
         except:
             print "Warning: failed to XInitThreads()"
 
+import os
+import sys
+sys.path.append(os.environ.get('GRC_HIER_PATH', os.path.expanduser('~/.grc_gnuradio')))
+
 from PyQt4 import Qt
+from b_PSD import b_PSD  # grc-generated hier_block
+from b_PSD_c import b_PSD_c  # grc-generated hier_block
+from b_binary_bipolar_source_f import b_binary_bipolar_source_f  # grc-generated hier_block
 from gnuradio import blocks
 from gnuradio import eng_notation
+from gnuradio import filter
 from gnuradio import gr
-from gnuradio import qtgui
 from gnuradio.eng_option import eng_option
 from gnuradio.filter import firdes
 from optparse import OptionParser
-import epy_block_0
-import sip
-import sys
 from gnuradio import qtgui
 
 
@@ -61,75 +65,47 @@ class top_block(gr.top_block, Qt.QWidget):
         # Variables
         ##################################################
         self.samp_rate = samp_rate = 32000
+        self.Sps = Sps = 8
 
         ##################################################
         # Blocks
         ##################################################
-        self.qtgui_time_sink_x_0 = qtgui.time_sink_c(
-        	3*10, #size
-        	samp_rate, #samp_rate
-        	"", #name
-        	3 #number of inputs
+        self.interp_fir_filter_xxx_0 = filter.interp_fir_filter_fff(Sps, (([1.]*Sps)))
+        self.interp_fir_filter_xxx_0.declare_sample_delay(0)
+        self.blocks_null_source_0 = blocks.null_source(gr.sizeof_float*1)
+        self.blocks_float_to_complex_0 = blocks.float_to_complex(1)
+        self.b_binary_bipolar_source_f_0 = b_binary_bipolar_source_f(
+            Am=1.,
+            Spb=1,
         )
-        self.qtgui_time_sink_x_0.set_update_time(0.10)
-        self.qtgui_time_sink_x_0.set_y_axis(-1, 1)
-
-        self.qtgui_time_sink_x_0.set_y_label('Amplitude', "")
-
-        self.qtgui_time_sink_x_0.enable_tags(-1, True)
-        self.qtgui_time_sink_x_0.set_trigger_mode(qtgui.TRIG_MODE_FREE, qtgui.TRIG_SLOPE_POS, 0.0, 0, 0, "")
-        self.qtgui_time_sink_x_0.enable_autoscale(False)
-        self.qtgui_time_sink_x_0.enable_grid(False)
-        self.qtgui_time_sink_x_0.enable_axis_labels(True)
-        self.qtgui_time_sink_x_0.enable_control_panel(False)
-        self.qtgui_time_sink_x_0.enable_stem_plot(False)
-
-        if not True:
-          self.qtgui_time_sink_x_0.disable_legend()
-
-        labels = ['', '', '', '', '',
-                  '', '', '', '', '']
-        widths = [1, 1, 1, 1, 1,
-                  1, 1, 1, 1, 1]
-        colors = ["blue", "red", "green", "black", "cyan",
-                  "magenta", "yellow", "dark red", "dark green", "blue"]
-        styles = [1, 1, 1, 1, 1,
-                  1, 1, 1, 1, 1]
-        markers = [-1, -1, -1, -1, -1,
-                   -1, -1, -1, -1, -1]
-        alphas = [1.0, 1.0, 1.0, 1.0, 1.0,
-                  1.0, 1.0, 1.0, 1.0, 1.0]
-
-        for i in xrange(6):
-            if len(labels[i]) == 0:
-                if(i % 2 == 0):
-                    self.qtgui_time_sink_x_0.set_line_label(i, "Re{{Data {0}}}".format(i/2))
-                else:
-                    self.qtgui_time_sink_x_0.set_line_label(i, "Im{{Data {0}}}".format(i/2))
-            else:
-                self.qtgui_time_sink_x_0.set_line_label(i, labels[i])
-            self.qtgui_time_sink_x_0.set_line_width(i, widths[i])
-            self.qtgui_time_sink_x_0.set_line_color(i, colors[i])
-            self.qtgui_time_sink_x_0.set_line_style(i, styles[i])
-            self.qtgui_time_sink_x_0.set_line_marker(i, markers[i])
-            self.qtgui_time_sink_x_0.set_line_alpha(i, alphas[i])
-
-        self._qtgui_time_sink_x_0_win = sip.wrapinstance(self.qtgui_time_sink_x_0.pyqwidget(), Qt.QWidget)
-        self.top_grid_layout.addWidget(self._qtgui_time_sink_x_0_win)
-        self.epy_block_0 = epy_block_0.e_add_cc()
-        self.blocks_vector_source_x_0_0 = blocks.vector_source_c((-4, 10, 1), True, 1, [])
-        self.blocks_vector_source_x_0 = blocks.vector_source_c((1, 2, 3), True, 1, [])
+        self.b_PSD_c_0 = b_PSD_c(
+            Ensayos=1000000,
+            Fc=0.,
+            N=1024,
+            Titulo='hola',
+            Ymax=6e-6,
+            samp_rate_audio=samp_rate,
+        )
+        self.top_grid_layout.addWidget(self.b_PSD_c_0)
+        self.b_PSD_0 = b_PSD(
+            Ensayos=1000000,
+            N=1024,
+            Titulo='espectro',
+            Ymax=5e-6,
+            samp_rate=samp_rate*Sps,
+        )
+        self.top_grid_layout.addWidget(self.b_PSD_0)
 
 
 
         ##################################################
         # Connections
         ##################################################
-        self.connect((self.blocks_vector_source_x_0, 0), (self.epy_block_0, 0))
-        self.connect((self.blocks_vector_source_x_0, 0), (self.qtgui_time_sink_x_0, 0))
-        self.connect((self.blocks_vector_source_x_0_0, 0), (self.epy_block_0, 1))
-        self.connect((self.blocks_vector_source_x_0_0, 0), (self.qtgui_time_sink_x_0, 1))
-        self.connect((self.epy_block_0, 0), (self.qtgui_time_sink_x_0, 2))
+        self.connect((self.b_binary_bipolar_source_f_0, 0), (self.interp_fir_filter_xxx_0, 0))
+        self.connect((self.blocks_float_to_complex_0, 0), (self.b_PSD_c_0, 0))
+        self.connect((self.blocks_null_source_0, 0), (self.blocks_float_to_complex_0, 1))
+        self.connect((self.interp_fir_filter_xxx_0, 0), (self.b_PSD_0, 0))
+        self.connect((self.interp_fir_filter_xxx_0, 0), (self.blocks_float_to_complex_0, 0))
 
     def closeEvent(self, event):
         self.settings = Qt.QSettings("GNU Radio", "top_block")
@@ -141,7 +117,16 @@ class top_block(gr.top_block, Qt.QWidget):
 
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
-        self.qtgui_time_sink_x_0.set_samp_rate(self.samp_rate)
+        self.b_PSD_c_0.set_samp_rate_audio(self.samp_rate)
+        self.b_PSD_0.set_samp_rate(self.samp_rate*self.Sps)
+
+    def get_Sps(self):
+        return self.Sps
+
+    def set_Sps(self, Sps):
+        self.Sps = Sps
+        self.interp_fir_filter_xxx_0.set_taps((([1.]*self.Sps)))
+        self.b_PSD_0.set_samp_rate(self.samp_rate*self.Sps)
 
 
 def main(top_block_cls=top_block, options=None):

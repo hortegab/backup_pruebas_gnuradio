@@ -1,9 +1,8 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 ##################################################
-# GNU Radio Python Flow Graph
-# Title: If Else
-# Generated: Thu Sep 13 11:39:57 2018
+# Puedes encontrar este codigo como ej2,py en:
+# https://sites.google.com/saber.uis.edu.co/comdig/sw
 ##################################################
 
 ###########################################################
@@ -19,7 +18,6 @@ from gnuradio.filter import firdes
 
 # Librerias para poder incluir graficas tipo QT
 from gnuradio import qtgui
-#from PyQt4 import QtGui as Qt # si no se acepta PyQt4 cambia por: from PyQt5 import Qt
 from PyQt4 import Qt # si no se acepta PyQt4 cambie PyQt4 por PyQt5
 import sys, sip
 
@@ -29,9 +27,6 @@ import sys, sip
 class flujograma(gr.top_block):
     def __init__(self):
         gr.top_block.__init__(self)
-
-        # Para que lo nuestro sea considerado una aplicación tipo QT GUI
-        self.qapp = Qt.QApplication(sys.argv) 
 
         ################################################
         ###   EL FLUJOGRAMA                          ###
@@ -71,9 +66,11 @@ class flujograma(gr.top_block):
 ###                LA CLASE PRINCIPAL                   ###
 ###########################################################
 def main():
+    # Para que lo nuestro sea considerado una aplicación tipo QT GUI
+    qapp = Qt.QApplication(sys.argv)
     simulador_de_la_envolvente_compleja = flujograma()
     simulador_de_la_envolvente_compleja.start()
-    simulador_de_la_envolvente_compleja.qapp.exec_()
+    qapp.exec_()
 
 if __name__ == "__main__":
     try:

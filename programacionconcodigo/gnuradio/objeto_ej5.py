@@ -1,11 +1,9 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
-##################################################
-# GNU Radio Python Flow Graph
-# Title: If Else
-# Generated: Thu Sep 13 11:39:57 2018
-##################################################
-
+# Lo de arriba es para que los IDE conozcan en que esta escrito este codigo 
+###########################################################
+# Puedes encontrar este codigo como objeto_ej5.py en:    ##
+# https://sites.google.com/saber.uis.edu.co/comdig/sw    ##
 ###########################################################
 ###           IMPORTACION DE LIBRERIAS                  ###
 ###########################################################
@@ -16,12 +14,12 @@ from gnuradio import gr
 from gnuradio import analog
 from gnuradio import blocks
 from gnuradio.filter import firdes
-
 # Librerias para poder incluir graficas tipo QT
 from gnuradio import qtgui
-#from PyQt4 import QtGui as Qt # si no se acepta PyQt4 cambia por: from PyQt5 import Qt
 from PyQt4 import Qt # si no se acepta PyQt4 cambie PyQt4 por PyQt5
 import sys, sip
+import objeto_ej3 as misbloques
+
 
 ###########################################################
 ###           LA CLASE DEL FLUJOGRAMA                   ###
@@ -29,9 +27,6 @@ import sys, sip
 class flujograma(gr.top_block):
     def __init__(self):
         gr.top_block.__init__(self)
-
-        # Para que lo nuestro sea considerado una aplicación tipo QT GUI
-        self.qapp = Qt.QApplication(sys.argv) 
 
         ################################################
         ###   EL FLUJOGRAMA                          ###
@@ -44,7 +39,9 @@ class flujograma(gr.top_block):
         # Los bloques
         self.src = analog.sig_source_c(samp_rate, analog.GR_SIN_WAVE, 0.1, 1, 0)
         self.nse = analog.noise_source_c(analog.GR_GAUSSIAN, 0.1)
-        self.add = blocks.add_cc()
+#        self.add = blocks.add_cc()
+#        self.add = e_add_cc()
+        self.add = misbloques.e_add_cc()
         self.thr = blocks.throttle(gr.sizeof_gr_complex, samp_rate, True)
         self.snk = qtgui.sink_c(
             fftsize, #fftsize
@@ -71,10 +68,15 @@ class flujograma(gr.top_block):
 ###                LA CLASE PRINCIPAL                   ###
 ###########################################################
 def main():
+    # Para que lo nuestro sea considerado una aplicación tipo QT GUI
+    qapp = Qt.QApplication(sys.argv)
     simulador_de_la_envolvente_compleja = flujograma()
     simulador_de_la_envolvente_compleja.start()
-    simulador_de_la_envolvente_compleja.qapp.exec_()
+    # Para arranque la parte grafica
+    qapp.exec_()
 
+# como el main lo hemos puesto como una funcion, ahora hay que llamarla
+# podriamos escibir simplemete main(), pero es mas profesional asi:
 if __name__ == "__main__":
     try:
         main()
