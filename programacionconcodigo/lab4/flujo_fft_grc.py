@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 ##################################################
 # GNU Radio Python Flow Graph
-# Title: Top Block
-# Generated: Mon Oct 14 13:50:28 2019
+# Title: Flujo Fft Grc
+# Generated: Mon Oct 14 15:09:51 2019
 ##################################################
 
 if __name__ == '__main__':
@@ -31,12 +31,12 @@ import sys
 from gnuradio import qtgui
 
 
-class top_block(gr.top_block, Qt.QWidget):
+class flujo_fft_grc(gr.top_block, Qt.QWidget):
 
     def __init__(self):
-        gr.top_block.__init__(self, "Top Block")
+        gr.top_block.__init__(self, "Flujo Fft Grc")
         Qt.QWidget.__init__(self)
-        self.setWindowTitle("Top Block")
+        self.setWindowTitle("Flujo Fft Grc")
         qtgui.util.check_set_qss()
         try:
             self.setWindowIcon(Qt.QIcon.fromTheme('gnuradio-grc'))
@@ -54,14 +54,15 @@ class top_block(gr.top_block, Qt.QWidget):
         self.top_grid_layout = Qt.QGridLayout()
         self.top_layout.addLayout(self.top_grid_layout)
 
-        self.settings = Qt.QSettings("GNU Radio", "top_block")
+        self.settings = Qt.QSettings("GNU Radio", "flujo_fft_grc")
         self.restoreGeometry(self.settings.value("geometry").toByteArray())
 
 
         ##################################################
         # Variables
         ##################################################
-        self.samp_rate = samp_rate = 32000
+        self.samp_rate = samp_rate = 32000.
+        self.f = f = 1000.
         self.N = N = 128
 
         ##################################################
@@ -69,16 +70,16 @@ class top_block(gr.top_block, Qt.QWidget):
         ##################################################
         self.qtgui_vector_sink_f_0 = qtgui.vector_sink_f(
             N,
-            0,
-            1.0,
-            "x-Axis",
-            "y-Axis",
-            "",
+            -samp_rate/2.,
+            samp_rate/N,
+            "frecuencia",
+            "Magnitud",
+            "FFT en Magnitud",
             1 # Number of inputs
         )
         self.qtgui_vector_sink_f_0.set_update_time(0.10)
         self.qtgui_vector_sink_f_0.set_y_axis(-10, 40)
-        self.qtgui_vector_sink_f_0.enable_autoscale(False)
+        self.qtgui_vector_sink_f_0.enable_autoscale(True)
         self.qtgui_vector_sink_f_0.enable_grid(False)
         self.qtgui_vector_sink_f_0.set_x_axis_units("")
         self.qtgui_vector_sink_f_0.set_y_axis_units("")
@@ -154,7 +155,7 @@ class top_block(gr.top_block, Qt.QWidget):
         self.e_fft_gnu = e_fft_gnu.e_vector_fft_ff(N=N)
         self.blocks_stream_to_vector_0 = blocks.stream_to_vector(gr.sizeof_float*1, N)
         self.blocks_add_xx_0 = blocks.add_vff(1)
-        self.analog_sig_source_x_0 = analog.sig_source_f(samp_rate, analog.GR_COS_WAVE, 1000, 1, 0)
+        self.analog_sig_source_x_0 = analog.sig_source_f(samp_rate, analog.GR_COS_WAVE, f, 1, 0)
         self.analog_noise_source_x_0 = analog.noise_source_f(analog.GR_GAUSSIAN, 0.1, 0)
 
 
@@ -170,7 +171,7 @@ class top_block(gr.top_block, Qt.QWidget):
         self.connect((self.e_fft_gnu, 0), (self.qtgui_vector_sink_f_0, 0))
 
     def closeEvent(self, event):
-        self.settings = Qt.QSettings("GNU Radio", "top_block")
+        self.settings = Qt.QSettings("GNU Radio", "flujo_fft_grc")
         self.settings.setValue("geometry", self.saveGeometry())
         event.accept()
 
@@ -179,18 +180,27 @@ class top_block(gr.top_block, Qt.QWidget):
 
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
+        self.qtgui_vector_sink_f_0.set_x_axis(-self.samp_rate/2., self.samp_rate/self.N)
         self.qtgui_time_sink_x_0.set_samp_rate(self.samp_rate)
         self.analog_sig_source_x_0.set_sampling_freq(self.samp_rate)
+
+    def get_f(self):
+        return self.f
+
+    def set_f(self, f):
+        self.f = f
+        self.analog_sig_source_x_0.set_frequency(self.f)
 
     def get_N(self):
         return self.N
 
     def set_N(self, N):
         self.N = N
+        self.qtgui_vector_sink_f_0.set_x_axis(-self.samp_rate/2., self.samp_rate/self.N)
         self.e_fft_gnu.N = self.N
 
 
-def main(top_block_cls=top_block, options=None):
+def main(top_block_cls=flujo_fft_grc, options=None):
 
     from distutils.version import StrictVersion
     if StrictVersion(Qt.qVersion()) >= StrictVersion("4.5.0"):

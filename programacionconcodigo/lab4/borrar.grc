@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <?grc format='1' created='3.7.13'?>
 <flow_graph>
-  <timestamp>Mon Oct 14 12:41:03 2019</timestamp>
+  <timestamp>Sun Oct 13 07:42:50 2019</timestamp>
   <block>
     <key>options</key>
     <param>
@@ -46,7 +46,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>flujo_fft_grc</value>
+      <value>borrar</value>
     </param>
     <param>
       <key>max_nouts</key>
@@ -101,61 +101,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(392, 12)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>N</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>128</value>
-    </param>
-  </block>
-  <block>
-    <key>variable</key>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(288, 12)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>f</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>1000.</value>
-    </param>
-  </block>
-  <block>
-    <key>variable</key>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(184, 12)</value>
+      <value>(192, 12)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -167,7 +113,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>32000.</value>
+      <value>32000</value>
     </param>
   </block>
   <block>
@@ -194,7 +140,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(32, 324)</value>
+      <value>(8, 148)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -218,7 +164,7 @@
     </param>
     <param>
       <key>type</key>
-      <value>float</value>
+      <value>complex</value>
     </param>
     <param>
       <key>seed</key>
@@ -249,11 +195,11 @@
     </param>
     <param>
       <key>freq</key>
-      <value>f</value>
+      <value>1000</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(48, 196)</value>
+      <value>(8, 236)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -277,7 +223,7 @@
     </param>
     <param>
       <key>type</key>
-      <value>float</value>
+      <value>complex</value>
     </param>
     <param>
       <key>samp_rate</key>
@@ -289,108 +235,6 @@
     </param>
   </block>
   <block>
-    <key>blocks_add_xx</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(240, 248)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>blocks_add_xx_0</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>float</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>num_inputs</key>
-      <value>2</value>
-    </param>
-    <param>
-      <key>vlen</key>
-      <value>1</value>
-    </param>
-  </block>
-  <block>
-    <key>blocks_stream_to_vector</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(384, 260)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>blocks_stream_to_vector_0</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>float</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>num_items</key>
-      <value>N</value>
-    </param>
-    <param>
-      <key>vlen</key>
-      <value>1</value>
-    </param>
-  </block>
-  <block>
     <key>epy_block</key>
     <param>
       <key>alias</key>
@@ -398,31 +242,74 @@
     </param>
     <param>
       <key>_io_cache</key>
-      <value>('e_vector_fft_ff', 'e_vector_fft_ff', [('N', '128')], [('0', 'float', 128)], [('0', 'float', 128)], 'calcula la fft en magnitud a una senal vectorial de N muestras y emtrega N muestras del espectro. N deber ser potencia de 2', ['N'])</value>
+      <value>('Plantilla_para_crear_bloques_cc', 'e_add_cc', [('escala', '0.5')], [('0', 'complex', 1), ('1', 'complex', 1)], [('0', 'complex', 1)], 'Aqui debes explicar como funciona el bloque, los parametros usados. En este caso particular el proposito es que esta clase sirva como ejemplo o plantilla para otras clase. La idea es que cada vez que vayas a crear una clase para un bloque GNU Radio vuelvas aqui ya que no es facil memorizar todos los detalles para crear un bloque GNU Radio. En todo caso, el ejemplo consiste en un bloque para una suma escalada de dos senales complejas. Por lo tanto hay dos senales de entrada y una de salida. Si escala=0.5 lo que se logra es promediar las dos senales', ['escala'])</value>
     </param>
     <param>
       <key>_source_code</key>
-      <value>import numpy as np
-from gnuradio import gr
-
-
-class e_vector_fft_ff(gr.sync_block):
-    """calcula la fft en magnitud a una senal vectorial de N muestras y emtrega N muestras del espectro. N deber ser potencia de 2"""
-
-    def __init__(self, N=128):  
+      <value>from gnuradio import gr
+import numpy as np
+ 
+# Se recomienda que el nombre de la clase finalice con una o dos letras especiales:
+# nombre_ff: cuando en el bloque sus entradas y salidas son senales reales y de tipo flotante
+# nombre_f: el bloque solo tiene una entrada o una salida y es una senal real de tipo flotante
+# En vez de "f" pueden usarse: c (senal compleja),  i (entera), b (binaria), etc.
+# Nota: esta plantilla tambien puede ser consultada en la libreria comdig_Lib_Bloques, dentro del bloque b_help
+ 
+class e_add_cc(gr.sync_block):  
+    """Aqui debes explicar como funciona el bloque, los parametros usados. En este caso particular el proposito es que esta clase sirva como ejemplo o plantilla para otras clase. La idea es que cada vez que vayas a crear una clase para un bloque GNU Radio vuelvas aqui ya que no es facil memorizar todos los detalles para crear un bloque GNU Radio. En todo caso, el ejemplo consiste en un bloque para una suma escalada de dos senales complejas. Por lo tanto hay dos senales de entrada y una de salida. Si escala=0.5 lo que se logra es promediar las dos senales"""
+ 
+    # Dentro de la funcion __init__(), deben definirse los parametros de configuracion del bloque.
+    # A cada parametro se le da un valor por defecto
+    # ejemplo 1, solo hay un parametro de configuracion: def __init__(self, amp=1.0)
+    # ejemplo 2, hay dos parametros: def __init__(self, amp=1.0, samp_rate= 32000)
+    # a continuacion esta el caso de un solo parametro que hemos llamado escala
+    def __init__(self, escala=0.5):
+ 
+        # En la siguiente funcion debes recordar que usaras:
+        # sync: cuando tu bloque sea un bloque de tipo sincrono (por cada muestra entrante habra una saliente)
+        # decim: cuando es un bloque decimador (por cada muestra saliente hay un numero entero de muestras entrantes)
+        # interp: cuando es un bloque interpolador (por cada muestra entrante hay un numero entero de muestras salientes)
+        # basic: cuando no hay relacion entre el numero de muestras entrantes y las salientes
+        # mas en: https://wiki.gnuradio.org/index.php/Guided_Tutorial_GNU_Radio_in_Python#3.3.1._Choosing_a_Block_Type
         gr.sync_block.__init__(
             self,
-            name='e_vector_fft_ff',   
-            in_sig=[(np.float32,N)],
-            out_sig=[(np.float32,N)]
+ 
+            # Lo siguiente es para definir el nombre que tendra nuestro bloque para los usuarios de GRC
+            name='Plantilla_para_crear_bloques_cc', 
+ 
+            # A continuacion se definen los tipos de senales de entrada y salida. Veamos algunos ejemplos:
+            # [np.complex64]: cuando se tiene una sola senal y es compleja
+            # [np.float32]: cuando se tiene una sola senal y es de tipo real y flotante
+            # [np.float32, np.complex64]: cuando hay dos senales: una de tipo real flotante y la otra es compleja
+            # otros casos: int8 o byte (entero de 8 bits, que en C++ se conoce como char)
+            # No hemos explorado mas casos, pero no es tan sencillo. Uno supondria que otros casos posibles son:
+            # int16 (en C++ se conoce como short), int32, int64. Los dos primeros funcionan, pero int64 no.
+            # En el siguiente ejemplo hay dos entradas complejas y una salida real.
+            in_sig=[np.complex64,np.complex64], 
+            out_sig=[np.complex64]
         )
-        self.N = N
-
+ 
+        # las variables que entran como parametros del bloque deben ser declaradas nuevamente asi:
+        self.escala=escala
+ 
+        # abajo se puede escribir lo que se le antoje al programador, por ejemplo:
+        # self.coef=1.0: define la variable global coef y le asigna el valor 1.0
+        # self significa que es una variable global, que se puede invocar directamente desde otras funciones.
+        # En todo caso, para las cosas que se definan aqui hay que tener en cuenta que:
+        # -  esto es parte del constructor de la clase, por lo tanto, por cada bloque que se cree con esta clase
+        #    estas cosas se invocaran solo una vez
+        # -  Se supone que lo que se cree aqui es para ser usado, de manera que deberia ser usado en work()
+        # A continuacion vamos a suponer que necesitamos usar constante  coef=1.0
+        self.coef = 1.0
+ 
+    # La funcion work() siempre debe estar presente en un bloque. Es alli donde estara la logica del bloque 
+    
     def work(self, input_items, output_items):
         in0 = input_items[0]
-    	out0 = output_items[0]
-    	out0[:]=abs(np.fft.fftshift(np.fft.fft(in0,self.N),1)) 
-        return len(output_items[0])
+        in1 = input_items[1]
+        out0 = output_items[0]
+        out0[:]=(in0+in1)*self.escala/self.coef
+        return len(out0)
 </value>
     </param>
     <param>
@@ -434,8 +321,12 @@ class e_vector_fft_ff(gr.sync_block):
       <value>True</value>
     </param>
     <param>
+      <key>escala</key>
+      <value>0.5</value>
+    </param>
+    <param>
       <key>_coordinate</key>
-      <value>(560, 260)</value>
+      <value>(224, 168)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -443,11 +334,7 @@ class e_vector_fft_ff(gr.sync_block):
     </param>
     <param>
       <key>id</key>
-      <value>e_fft_gnu</value>
-    </param>
-    <param>
-      <key>N</key>
-      <value>N</value>
+      <value>epy_block_0</value>
     </param>
   </block>
   <block>
@@ -486,7 +373,7 @@ class e_vector_fft_ff(gr.sync_block):
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(416, 380)</value>
+      <value>(480, 164)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -794,7 +681,7 @@ class e_vector_fft_ff(gr.sync_block):
     </param>
     <param>
       <key>type</key>
-      <value>float</value>
+      <value>complex</value>
     </param>
     <param>
       <key>update_time</key>
@@ -817,310 +704,21 @@ class e_vector_fft_ff(gr.sync_block):
       <value>-1</value>
     </param>
   </block>
-  <block>
-    <key>qtgui_vector_sink_f</key>
-    <param>
-      <key>autoscale</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>average</key>
-      <value>1.0</value>
-    </param>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(736, 204)</value>
-    </param>
-    <param>
-      <key>gui_hint</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>grid</key>
-      <value>False</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>qtgui_vector_sink_f_0</value>
-    </param>
-    <param>
-      <key>alpha1</key>
-      <value>1.0</value>
-    </param>
-    <param>
-      <key>color1</key>
-      <value>"blue"</value>
-    </param>
-    <param>
-      <key>label1</key>
-      <value></value>
-    </param>
-    <param>
-      <key>width1</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>alpha10</key>
-      <value>1.0</value>
-    </param>
-    <param>
-      <key>color10</key>
-      <value>"dark blue"</value>
-    </param>
-    <param>
-      <key>label10</key>
-      <value></value>
-    </param>
-    <param>
-      <key>width10</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>alpha2</key>
-      <value>1.0</value>
-    </param>
-    <param>
-      <key>color2</key>
-      <value>"red"</value>
-    </param>
-    <param>
-      <key>label2</key>
-      <value></value>
-    </param>
-    <param>
-      <key>width2</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>alpha3</key>
-      <value>1.0</value>
-    </param>
-    <param>
-      <key>color3</key>
-      <value>"green"</value>
-    </param>
-    <param>
-      <key>label3</key>
-      <value></value>
-    </param>
-    <param>
-      <key>width3</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>alpha4</key>
-      <value>1.0</value>
-    </param>
-    <param>
-      <key>color4</key>
-      <value>"black"</value>
-    </param>
-    <param>
-      <key>label4</key>
-      <value></value>
-    </param>
-    <param>
-      <key>width4</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>alpha5</key>
-      <value>1.0</value>
-    </param>
-    <param>
-      <key>color5</key>
-      <value>"cyan"</value>
-    </param>
-    <param>
-      <key>label5</key>
-      <value></value>
-    </param>
-    <param>
-      <key>width5</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>alpha6</key>
-      <value>1.0</value>
-    </param>
-    <param>
-      <key>color6</key>
-      <value>"magenta"</value>
-    </param>
-    <param>
-      <key>label6</key>
-      <value></value>
-    </param>
-    <param>
-      <key>width6</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>alpha7</key>
-      <value>1.0</value>
-    </param>
-    <param>
-      <key>color7</key>
-      <value>"yellow"</value>
-    </param>
-    <param>
-      <key>label7</key>
-      <value></value>
-    </param>
-    <param>
-      <key>width7</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>alpha8</key>
-      <value>1.0</value>
-    </param>
-    <param>
-      <key>color8</key>
-      <value>"dark red"</value>
-    </param>
-    <param>
-      <key>label8</key>
-      <value></value>
-    </param>
-    <param>
-      <key>width8</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>alpha9</key>
-      <value>1.0</value>
-    </param>
-    <param>
-      <key>color9</key>
-      <value>"dark green"</value>
-    </param>
-    <param>
-      <key>label9</key>
-      <value></value>
-    </param>
-    <param>
-      <key>width9</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>name</key>
-      <value>"FFT en Magnitud"</value>
-    </param>
-    <param>
-      <key>nconnections</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>ref_level</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>showports</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>update_time</key>
-      <value>0.10</value>
-    </param>
-    <param>
-      <key>vlen</key>
-      <value>N</value>
-    </param>
-    <param>
-      <key>x_axis_label</key>
-      <value>"frecuencia"</value>
-    </param>
-    <param>
-      <key>x_start</key>
-      <value>-samp_rate/2.</value>
-    </param>
-    <param>
-      <key>x_step</key>
-      <value>samp_rate/N</value>
-    </param>
-    <param>
-      <key>x_units</key>
-      <value>""</value>
-    </param>
-    <param>
-      <key>ymax</key>
-      <value>40</value>
-    </param>
-    <param>
-      <key>ymin</key>
-      <value>-10</value>
-    </param>
-    <param>
-      <key>y_axis_label</key>
-      <value>"Magnitud"</value>
-    </param>
-    <param>
-      <key>y_units</key>
-      <value>""</value>
-    </param>
-  </block>
   <connection>
     <source_block_id>analog_noise_source_x_0</source_block_id>
-    <sink_block_id>blocks_add_xx_0</sink_block_id>
+    <sink_block_id>epy_block_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>analog_sig_source_x_0</source_block_id>
+    <sink_block_id>epy_block_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>1</sink_key>
   </connection>
   <connection>
-    <source_block_id>analog_sig_source_x_0</source_block_id>
-    <sink_block_id>blocks_add_xx_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>blocks_add_xx_0</source_block_id>
-    <sink_block_id>blocks_stream_to_vector_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>blocks_add_xx_0</source_block_id>
+    <source_block_id>epy_block_0</source_block_id>
     <sink_block_id>qtgui_time_sink_x_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>blocks_stream_to_vector_0</source_block_id>
-    <sink_block_id>e_fft_gnu</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>e_fft_gnu</source_block_id>
-    <sink_block_id>qtgui_vector_sink_f_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
