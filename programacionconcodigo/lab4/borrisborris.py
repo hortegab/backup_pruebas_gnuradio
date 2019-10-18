@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 ##################################################
 # GNU Radio Python Flow Graph
-# Title: Top Block
-# Generated: Fri Oct 18 05:38:38 2019
+# Title: Borrisborris
+# Generated: Fri Oct 18 05:38:57 2019
 ##################################################
 
 if __name__ == '__main__':
@@ -28,12 +28,12 @@ import sys
 from gnuradio import qtgui
 
 
-class top_block(gr.top_block, Qt.QWidget):
+class borrisborris(gr.top_block, Qt.QWidget):
 
     def __init__(self):
-        gr.top_block.__init__(self, "Top Block")
+        gr.top_block.__init__(self, "Borrisborris")
         Qt.QWidget.__init__(self)
-        self.setWindowTitle("Top Block")
+        self.setWindowTitle("Borrisborris")
         qtgui.util.check_set_qss()
         try:
             self.setWindowIcon(Qt.QIcon.fromTheme('gnuradio-grc'))
@@ -51,7 +51,7 @@ class top_block(gr.top_block, Qt.QWidget):
         self.top_grid_layout = Qt.QGridLayout()
         self.top_layout.addLayout(self.top_grid_layout)
 
-        self.settings = Qt.QSettings("GNU Radio", "top_block")
+        self.settings = Qt.QSettings("GNU Radio", "borrisborris")
         self.restoreGeometry(self.settings.value("geometry").toByteArray())
 
 
@@ -74,7 +74,7 @@ class top_block(gr.top_block, Qt.QWidget):
         self.connect((self.blocks_wavfile_source_0, 0), (self.audio_sink_0, 0))
 
     def closeEvent(self, event):
-        self.settings = Qt.QSettings("GNU Radio", "top_block")
+        self.settings = Qt.QSettings("GNU Radio", "borrisborris")
         self.settings.setValue("geometry", self.saveGeometry())
         event.accept()
 
@@ -85,7 +85,7 @@ class top_block(gr.top_block, Qt.QWidget):
         self.samp_rate = samp_rate
 
 
-def main(top_block_cls=top_block, options=None):
+def main(top_block_cls=borrisborris, options=None):
 
     from distutils.version import StrictVersion
     if StrictVersion(Qt.qVersion()) >= StrictVersion("4.5.0"):
