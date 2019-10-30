@@ -249,18 +249,19 @@ class vec_diagrama_ojo2_f(gr.sync_block):
     Esto es muy bueno, pues esa libreria es dificil de instalar, depende 
     de varias otras librerias y no en todos los computadores funciona"""
 
-    def __init__(self, N=16, samp_rate=32000):
-        gr.sync_block.__init__(self, name='vec_diagrama_ojo_f', in_sig=[(np.float32, N)], out_sig=None)
-        self.Sps = N/2
-        self.Tsamp=1./samp_rate
-        Tb=self.Sps*self.Tsamp
-        self.t = np.linspace(-Tb,Tb, 2*self.Sps)
+    def __init__(self, Sps=8, N=2048):
+        gr.sync_block.__init__(self, name='vec_diagrama_ojo_f', in_sig=[(np.float32, N2)], out_sig=None)
+        self.Sps = Sps
+        self.N2 = N2
 
     def work(self, input_items, output_items):
         in0 = input_items[0] # in0 es un 2D array (como una matrix)
         s=in0[0]    # Esto traduce el 2D array a 1D array (a un vector)
-        plt.plot(self.t,s)             
-        plt.pause(self.Tsamp)
+        L=len(s)
+        L2=L/2.
+        t = np.linspace(-L2,L2-1, L)
+        plt.plot(t,s)             
+        plt.pause(0.0000001)
         return len(input_items[0])
 #################################################################
 ##       DIAGRAMA DE OJO TIPO STREAM CON MATPLOTLIB            ##

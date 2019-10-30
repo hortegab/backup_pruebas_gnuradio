@@ -24,7 +24,7 @@ import sys, sip
 # Ahora debes importar tu libreria. A continuacion suponemos que tu libreria ha sido
 # guardada en un archivo llamado lib_comdig_code.py
 import lib_comdig_code as misbloques  
- 
+#import matplotlib.pyplot as plt
  
 ###########################################################
 ###           LA CLASE DEL FLUJOGRAMA                   ###
@@ -39,37 +39,59 @@ class flujograma(gr.top_block):
  
         # Las variables usadas en el flujograma
         samp_rate = 11025
-        N= 1024
+        Sps=16
+        N= Sps*2
+        ntaps=6*6        
+        beta=0
+        # respuesta al impulso
+        #h=misbloques.rect(Sps) # forma rectangular
+        #h=misbloques.nyq(Sps,ntaps) # forma sinc
+        #h=misbloques.rcos(Sps,ntaps,beta) # forma coseno alzado
+        #h=misbloques.rrcos(Sps,ntaps,beta) # forma raiz coseno alzado
+        #h=misbloques.B_NRZ_L(Sps) # forma NRZ_L
+        #h=misbloques.RZ(Sps) # forma RZ
+        h=misbloques.saw(Sps) # forma saw
+        
         # Los bloques
-        #p_fuente=blocks.wavfile_source('/home/uis-e3t/MisGits/backup_pruebas_gnuradio/programacionconcodigo/lab4/bush-clinton_debate_waffle.wav', True)
-        p_fuente = audio.source(samp_rate, '', True)
+        p_fuente=misbloques.e_generador_fun_f(Sps,h)
         p_pantalla_t = qtgui.time_sink_f(
             512, # numero de muestras en la ventana del osciloscopio
             samp_rate,
             "senal promediada", # nombre que aparece en la grafica
             1 # Nuemero de entradas del osciloscopio
         )
+        
         p_chorro_a_vector=blocks.stream_to_vector(gr.sizeof_float*1, N)
+        p_nse = analog.noise_source_f(analog.GR_GAUSSIAN, 0.1)
+        p_add = misbloques.e_add_ff(1.0)
         p_psd=misbloques.e_vector_psd_ff(N,2000000)
+        p_ojo=misbloques.vec_diagrama_ojo2_f(Sps,N)
         p_pantalla_vectorial = qtgui.vector_sink_f(
             N,
             -samp_rate/2.,
             samp_rate/N,
             "frecuencia",
             "Magnitud",
-            "FT en Magnitud",
+            "PSD",
             1 # Number of inputs
         )
-        # p_pantalla_vectorial.enable_autoscale(True)
-        self.connect(p_fuente, p_pantalla_t)
-        self.connect(p_fuente, p_chorro_a_vector, p_psd, p_pantalla_vectorial)
+        p_pantalla_vectorial.enable_autoscale(True)
+        # LAS CONEXIONES
+        self.connect(p_fuente, (p_add, 0))
+        self.connect(p_nse, (p_add, 1))
+
+        self.connect(p_add, p_pantalla_t)
+        #self.connect(p_fuente, p_chorro_a_vector, p_psd, p_pantalla_vectorial)
+        self.connect(p_add, p_chorro_a_vector)
+        self.connect(p_chorro_a_vector, p_psd, p_pantalla_vectorial)
+        self.connect(p_chorro_a_vector, p_ojo)
  
         # La configuracion para graficar
         pyobj = sip.wrapinstance(p_pantalla_vectorial.pyqwidget(), Qt.QWidget)
         pyobj1 = sip.wrapinstance(p_pantalla_t.pyqwidget(), Qt.QWidget)
-        pyobj.show()
+        #pyobj.show()
         pyobj1.show()
- 
+         
 ###########################################################
 ###                LA CLASE PRINCIPAL                   ###
 ###########################################################

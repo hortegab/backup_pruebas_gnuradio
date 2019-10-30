@@ -40,9 +40,20 @@ class flujograma(gr.top_block):
         # Las variables usadas en el flujograma
         samp_rate = 11025
         N= 1024
+        Sps=6
+        ntaps=6*6        
+        beta=0
+        # respuesta al impulso
+        #h=misbloques.rect(Sps) # forma rectangular
+        #h=misbloques.nyq(Sps,ntaps) # forma sinc
+        #h=misbloques.rcos(Sps,ntaps,beta) # forma coseno alzado
+        #h=misbloques.rrcos(Sps,ntaps,beta) # forma raiz coseno alzado
+        #h=misbloques.B_NRZ_L(Sps) # forma NRZ_L
+        #h=misbloques.RZ(Sps) # forma RZ
+        h=misbloques.saw(Sps) # forma saw
+        
         # Los bloques
-        #p_fuente=blocks.wavfile_source('/home/uis-e3t/MisGits/backup_pruebas_gnuradio/programacionconcodigo/lab4/bush-clinton_debate_waffle.wav', True)
-        p_fuente = audio.source(samp_rate, '', True)
+        p_fuente=misbloques.e_generador_fun_f(Sps,h)
         p_pantalla_t = qtgui.time_sink_f(
             512, # numero de muestras en la ventana del osciloscopio
             samp_rate,
@@ -57,10 +68,11 @@ class flujograma(gr.top_block):
             samp_rate/N,
             "frecuencia",
             "Magnitud",
-            "FT en Magnitud",
+            "PSD",
             1 # Number of inputs
         )
-        # p_pantalla_vectorial.enable_autoscale(True)
+        p_pantalla_vectorial.enable_autoscale(True)
+        # LAS CONEXIONES
         self.connect(p_fuente, p_pantalla_t)
         self.connect(p_fuente, p_chorro_a_vector, p_psd, p_pantalla_vectorial)
  
