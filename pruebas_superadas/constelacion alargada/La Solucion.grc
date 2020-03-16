@@ -634,7 +634,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>3</value>
+      <value>7</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -949,7 +949,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>int(samp_rate_usrp_rx/64)</value>
+      <value>int(samp_rate_usrp_rx/128)</value>
     </param>
   </block>
   <block>
