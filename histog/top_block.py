@@ -3,7 +3,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: Top Block
-# Generated: Sat Mar 28 12:38:03 2020
+# Generated: Sun Mar 29 00:23:07 2020
 ##################################################
 
 if __name__ == '__main__':
@@ -21,17 +21,13 @@ import sys
 sys.path.append(os.environ.get('GRC_HIER_PATH', os.path.expanduser('~/.grc_gnuradio')))
 
 from PyQt4 import Qt
-from b_cdf_ff import b_cdf_ff  # grc-generated hier_block
-from b_pdf_cdf_ff import b_pdf_cdf_ff  # grc-generated hier_block
-from b_pdf_ff import b_pdf_ff  # grc-generated hier_block
+from b_v_aleatoria_scope_pdf_cdf_f import b_v_aleatoria_scope_pdf_cdf_f  # grc-generated hier_block
 from gnuradio import analog
 from gnuradio import eng_notation
 from gnuradio import gr
-from gnuradio import qtgui
 from gnuradio.eng_option import eng_option
 from gnuradio.filter import firdes
 from optparse import OptionParser
-import sip
 from gnuradio import qtgui
 
 
@@ -66,90 +62,25 @@ class top_block(gr.top_block, Qt.QWidget):
         # Variables
         ##################################################
         self.samp_rate = samp_rate = 32000
-        self.N = N = 1024
 
         ##################################################
         # Blocks
         ##################################################
-        self.qtgui_time_sink_x_0_0 = qtgui.time_sink_f(
-        	1024, #size
-        	samp_rate, #samp_rate
-        	"senal", #name
-        	1 #number of inputs
+        self.b_v_aleatoria_scope_pdf_cdf_f_0 = b_v_aleatoria_scope_pdf_cdf_f(
+            N_frec=2014,
+            N_time=2014,
+            V_p=5.,
+            samp_rate=samp_rate,
         )
-        self.qtgui_time_sink_x_0_0.set_update_time(0.10)
-        self.qtgui_time_sink_x_0_0.set_y_axis(-1, 1)
-
-        self.qtgui_time_sink_x_0_0.set_y_label('Amplitude', "")
-
-        self.qtgui_time_sink_x_0_0.enable_tags(-1, True)
-        self.qtgui_time_sink_x_0_0.set_trigger_mode(qtgui.TRIG_MODE_FREE, qtgui.TRIG_SLOPE_POS, 0.0, 0, 0, "")
-        self.qtgui_time_sink_x_0_0.enable_autoscale(False)
-        self.qtgui_time_sink_x_0_0.enable_grid(False)
-        self.qtgui_time_sink_x_0_0.enable_axis_labels(True)
-        self.qtgui_time_sink_x_0_0.enable_control_panel(False)
-        self.qtgui_time_sink_x_0_0.enable_stem_plot(False)
-
-        if not True:
-          self.qtgui_time_sink_x_0_0.disable_legend()
-
-        labels = ['', '', '', '', '',
-                  '', '', '', '', '']
-        widths = [1, 1, 1, 1, 1,
-                  1, 1, 1, 1, 1]
-        colors = ["blue", "red", "green", "black", "cyan",
-                  "magenta", "yellow", "dark red", "dark green", "blue"]
-        styles = [1, 1, 1, 1, 1,
-                  1, 1, 1, 1, 1]
-        markers = [-1, -1, -1, -1, -1,
-                   -1, -1, -1, -1, -1]
-        alphas = [1.0, 1.0, 1.0, 1.0, 1.0,
-                  1.0, 1.0, 1.0, 1.0, 1.0]
-
-        for i in xrange(1):
-            if len(labels[i]) == 0:
-                self.qtgui_time_sink_x_0_0.set_line_label(i, "Data {0}".format(i))
-            else:
-                self.qtgui_time_sink_x_0_0.set_line_label(i, labels[i])
-            self.qtgui_time_sink_x_0_0.set_line_width(i, widths[i])
-            self.qtgui_time_sink_x_0_0.set_line_color(i, colors[i])
-            self.qtgui_time_sink_x_0_0.set_line_style(i, styles[i])
-            self.qtgui_time_sink_x_0_0.set_line_marker(i, markers[i])
-            self.qtgui_time_sink_x_0_0.set_line_alpha(i, alphas[i])
-
-        self._qtgui_time_sink_x_0_0_win = sip.wrapinstance(self.qtgui_time_sink_x_0_0.pyqwidget(), Qt.QWidget)
-        self.top_grid_layout.addWidget(self._qtgui_time_sink_x_0_0_win)
-        self.b_pdf_ff_0 = b_pdf_ff(
-            EjeX='potencia',
-            Xmax=4.,
-            Xmin=-4.,
-            pdf_max=0.4,
-        )
-        self.top_grid_layout.addWidget(self.b_pdf_ff_0)
-        self.b_pdf_cdf_ff_0 = b_pdf_cdf_ff(
-            EjeX='potencia',
-            Xmax=4.,
-            Xmin=-4.,
-            pdf_max=0.4,
-        )
-        self.top_grid_layout.addWidget(self.b_pdf_cdf_ff_0)
-        self.b_cdf_ff_0 = b_cdf_ff(
-            EjeX='potencia',
-            Xmax=4.,
-            Xmin=-4.,
-        )
-        self.top_grid_layout.addWidget(self.b_cdf_ff_0)
-        self.analog_noise_source_x_0_0 = analog.noise_source_f(analog.GR_GAUSSIAN, 1, 0)
+        self.top_grid_layout.addWidget(self.b_v_aleatoria_scope_pdf_cdf_f_0)
+        self.analog_noise_source_x_0 = analog.noise_source_f(analog.GR_GAUSSIAN, 1, 0)
 
 
 
         ##################################################
         # Connections
         ##################################################
-        self.connect((self.analog_noise_source_x_0_0, 0), (self.b_cdf_ff_0, 0))
-        self.connect((self.analog_noise_source_x_0_0, 0), (self.b_pdf_cdf_ff_0, 0))
-        self.connect((self.analog_noise_source_x_0_0, 0), (self.b_pdf_ff_0, 0))
-        self.connect((self.analog_noise_source_x_0_0, 0), (self.qtgui_time_sink_x_0_0, 0))
+        self.connect((self.analog_noise_source_x_0, 0), (self.b_v_aleatoria_scope_pdf_cdf_f_0, 0))
 
     def closeEvent(self, event):
         self.settings = Qt.QSettings("GNU Radio", "top_block")
@@ -161,13 +92,7 @@ class top_block(gr.top_block, Qt.QWidget):
 
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
-        self.qtgui_time_sink_x_0_0.set_samp_rate(self.samp_rate)
-
-    def get_N(self):
-        return self.N
-
-    def set_N(self, N):
-        self.N = N
+        self.b_v_aleatoria_scope_pdf_cdf_f_0.set_samp_rate(self.samp_rate)
 
 
 def main(top_block_cls=top_block, options=None):
