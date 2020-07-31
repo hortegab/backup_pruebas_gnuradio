@@ -1,10 +1,15 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-##################################################
+
+#
+# SPDX-License-Identifier: GPL-3.0
+#
 # GNU Radio Python Flow Graph
-# Title: Top Block
-# Generated: Fri Jun 12 10:26:41 2020
-##################################################
+# Title: MODULADOR DQPSK
+# Author: DANIEL CARCHI
+# GNU Radio version: 3.8.1.0
+
+from distutils.version import StrictVersion
 
 if __name__ == '__main__':
     import ctypes
@@ -14,31 +19,41 @@ if __name__ == '__main__':
             x11 = ctypes.cdll.LoadLibrary('libX11.so')
             x11.XInitThreads()
         except:
-            print "Warning: failed to XInitThreads()"
+            print("Warning: failed to XInitThreads()")
 
-from PyQt4 import Qt
+import os
+import sys
+sys.path.append(os.environ.get('GRC_HIER_PATH', os.path.expanduser('~/.grc_gnuradio')))
+
+from PyQt5 import Qt
+from gnuradio import qtgui
+from gnuradio.filter import firdes
+import sip
+from b_Eye_Diagram_simple_c import b_Eye_Diagram_simple_c  # grc-generated hier_block
 from gnuradio import analog
 from gnuradio import blocks
-from gnuradio import eng_notation
+import numpy
+from gnuradio import digital
 from gnuradio import filter
 from gnuradio import gr
+import signal
+from argparse import ArgumentParser
+from gnuradio.eng_arg import eng_float, intx
+from gnuradio import eng_notation
+from gnuradio import gr,digital
+from gnuradio.qtgui import Range, RangeWidget
+import e_VCO_fase_fc_0
+import epy_block_0
+import math
+import wform  # embedded python module
 from gnuradio import qtgui
-from gnuradio.eng_option import eng_option
-from gnuradio.filter import firdes
-from optparse import OptionParser
-import formas  # embedded python module
-import numpy
-import sip
-import sys
-from gnuradio import qtgui
-
 
 class top_block(gr.top_block, Qt.QWidget):
 
     def __init__(self):
-        gr.top_block.__init__(self, "Top Block")
+        gr.top_block.__init__(self, "MODULADOR DQPSK")
         Qt.QWidget.__init__(self)
-        self.setWindowTitle("Top Block")
+        self.setWindowTitle("MODULADOR DQPSK")
         qtgui.util.check_set_qss()
         try:
             self.setWindowIcon(Qt.QIcon.fromTheme('gnuradio-grc'))
@@ -57,68 +72,172 @@ class top_block(gr.top_block, Qt.QWidget):
         self.top_layout.addLayout(self.top_grid_layout)
 
         self.settings = Qt.QSettings("GNU Radio", "top_block")
-        self.restoreGeometry(self.settings.value("geometry").toByteArray())
 
+        try:
+            if StrictVersion(Qt.qVersion()) < StrictVersion("5.0.0"):
+                self.restoreGeometry(self.settings.value("geometry").toByteArray())
+            else:
+                self.restoreGeometry(self.settings.value("geometry"))
+        except:
+            pass
 
         ##################################################
         # Variables
         ##################################################
+        self.samp_rate_2920_rx = samp_rate_2920_rx = 100000000
+        self.coef_rx = coef_rx = 2**8
+        self.samp_rate = samp_rate = int(samp_rate_2920_rx/coef_rx)
         self.Sps = Sps = 8
-        self.Rb = Rb = 64
-        self.samp_rate = samp_rate = Rb*Sps
-        self.run_stop = run_stop = True
-        self.h = h = formas.sinc(8,32)
+        self.M = M = 4
+        self.Rs = Rs = samp_rate/Sps
+        self.BpS = BpS = int(math.log(M,2))
+        self.no_code = no_code = digital.utils.mod_codes.NO_CODE
+        self.Rb = Rb = Rs/BpS
+        self.ntaps = ntaps = Sps*16
+        self.h = h = wform.rect(Sps)
+        self.constelacion = constelacion = digital.psk_constellation(M,no_code,False)
+        self.W = W = Rb/2
+        self.Rolloff = Rolloff = 1.0
+        self.Retardo_bits = Retardo_bits = 0
+        self.Retardo_Timing = Retardo_Timing = 0
 
         ##################################################
         # Blocks
         ##################################################
-        _run_stop_check_box = Qt.QCheckBox('Pause')
-        self._run_stop_choices = {True: True, False: False}
-        self._run_stop_choices_inv = dict((v,k) for k,v in self._run_stop_choices.iteritems())
-        self._run_stop_callback = lambda i: Qt.QMetaObject.invokeMethod(_run_stop_check_box, "setChecked", Qt.Q_ARG("bool", self._run_stop_choices_inv[i]))
-        self._run_stop_callback(self.run_stop)
-        _run_stop_check_box.stateChanged.connect(lambda i: self.set_run_stop(self._run_stop_choices[bool(i)]))
-        self.top_grid_layout.addWidget(_run_stop_check_box, 0, 0, 1, 1)
-        for r in range(0, 1):
+        self.menu = Qt.QTabWidget()
+        self.menu_widget_0 = Qt.QWidget()
+        self.menu_layout_0 = Qt.QBoxLayout(Qt.QBoxLayout.TopToBottom, self.menu_widget_0)
+        self.menu_grid_layout_0 = Qt.QGridLayout()
+        self.menu_layout_0.addLayout(self.menu_grid_layout_0)
+        self.menu.addTab(self.menu_widget_0, 'Timing')
+        self.menu_widget_1 = Qt.QWidget()
+        self.menu_layout_1 = Qt.QBoxLayout(Qt.QBoxLayout.TopToBottom, self.menu_widget_1)
+        self.menu_grid_layout_1 = Qt.QGridLayout()
+        self.menu_layout_1.addLayout(self.menu_grid_layout_1)
+        self.menu.addTab(self.menu_widget_1, 'T0 versus R0')
+        self.menu_widget_2 = Qt.QWidget()
+        self.menu_layout_2 = Qt.QBoxLayout(Qt.QBoxLayout.TopToBottom, self.menu_widget_2)
+        self.menu_grid_layout_2 = Qt.QGridLayout()
+        self.menu_layout_2.addLayout(self.menu_grid_layout_2)
+        self.menu.addTab(self.menu_widget_2, 'T1 versus R1')
+        self.menu_widget_3 = Qt.QWidget()
+        self.menu_layout_3 = Qt.QBoxLayout(Qt.QBoxLayout.TopToBottom, self.menu_widget_3)
+        self.menu_grid_layout_3 = Qt.QGridLayout()
+        self.menu_layout_3.addLayout(self.menu_grid_layout_3)
+        self.menu.addTab(self.menu_widget_3, 'T2 versus R2')
+        self.menu_widget_4 = Qt.QWidget()
+        self.menu_layout_4 = Qt.QBoxLayout(Qt.QBoxLayout.TopToBottom, self.menu_widget_4)
+        self.menu_grid_layout_4 = Qt.QGridLayout()
+        self.menu_layout_4.addLayout(self.menu_grid_layout_4)
+        self.menu.addTab(self.menu_widget_4, 'T3 versus R3')
+        self.top_grid_layout.addWidget(self.menu, 2, 0, 1, 2)
+        for r in range(2, 3):
             self.top_grid_layout.setRowStretch(r, 1)
-        for c in range(0, 1):
+        for c in range(0, 2):
             self.top_grid_layout.setColumnStretch(c, 1)
+        self._Retardo_bits_range = Range(0, Sps*10, 1, 0, 200)
+        self._Retardo_bits_win = RangeWidget(self._Retardo_bits_range, self.set_Retardo_bits, 'Delay transmited signal to match with the received signal', "counter_slider", int)
+        self.menu_grid_layout_4.addWidget(self._Retardo_bits_win, 0, 0, 1, 1)
+        for r in range(0, 1):
+            self.menu_grid_layout_4.setRowStretch(r, 1)
+        for c in range(0, 1):
+            self.menu_grid_layout_4.setColumnStretch(c, 1)
+        self._Retardo_Timing_range = Range(0, Sps-1, 1, 0, 200)
+        self._Retardo_Timing_win = RangeWidget(self._Retardo_Timing_range, self.set_Retardo_Timing, 'Timing', "counter", int)
+        self.menu_grid_layout_0.addWidget(self._Retardo_Timing_win, 0, 0, 1, 1)
+        for r in range(0, 1):
+            self.menu_grid_layout_0.setRowStretch(r, 1)
+        for c in range(0, 1):
+            self.menu_grid_layout_0.setColumnStretch(c, 1)
+        self.qtgui_time_sink_x_0_1 = qtgui.time_sink_c(
+            1024, #size
+            samp_rate, #samp_rate
+            "", #name
+            2 #number of inputs
+        )
+        self.qtgui_time_sink_x_0_1.set_update_time(0.10)
+        self.qtgui_time_sink_x_0_1.set_y_axis(-1, 1)
+
+        self.qtgui_time_sink_x_0_1.set_y_label('Amplitude', "")
+
+        self.qtgui_time_sink_x_0_1.enable_tags(True)
+        self.qtgui_time_sink_x_0_1.set_trigger_mode(qtgui.TRIG_MODE_FREE, qtgui.TRIG_SLOPE_POS, 0.0, 0, 0, "")
+        self.qtgui_time_sink_x_0_1.enable_autoscale(False)
+        self.qtgui_time_sink_x_0_1.enable_grid(False)
+        self.qtgui_time_sink_x_0_1.enable_axis_labels(True)
+        self.qtgui_time_sink_x_0_1.enable_control_panel(False)
+        self.qtgui_time_sink_x_0_1.enable_stem_plot(False)
+
+
+        labels = ['Signal 1', 'Signal 2', 'Signal 3', 'Signal 4', 'Signal 5',
+            'Signal 6', 'Signal 7', 'Signal 8', 'Signal 9', 'Signal 10']
+        widths = [1, 1, 1, 1, 1,
+            1, 1, 1, 1, 1]
+        colors = ['blue', 'red', 'green', 'black', 'cyan',
+            'magenta', 'yellow', 'dark red', 'dark green', 'dark blue']
+        alphas = [1.0, 1.0, 1.0, 1.0, 1.0,
+            1.0, 1.0, 1.0, 1.0, 1.0]
+        styles = [1, 1, 1, 1, 1,
+            1, 1, 1, 1, 1]
+        markers = [-1, -1, -1, -1, -1,
+            -1, -1, -1, -1, -1]
+
+
+        for i in range(4):
+            if len(labels[i]) == 0:
+                if (i % 2 == 0):
+                    self.qtgui_time_sink_x_0_1.set_line_label(i, "Re{{Data {0}}}".format(i/2))
+                else:
+                    self.qtgui_time_sink_x_0_1.set_line_label(i, "Im{{Data {0}}}".format(i/2))
+            else:
+                self.qtgui_time_sink_x_0_1.set_line_label(i, labels[i])
+            self.qtgui_time_sink_x_0_1.set_line_width(i, widths[i])
+            self.qtgui_time_sink_x_0_1.set_line_color(i, colors[i])
+            self.qtgui_time_sink_x_0_1.set_line_style(i, styles[i])
+            self.qtgui_time_sink_x_0_1.set_line_marker(i, markers[i])
+            self.qtgui_time_sink_x_0_1.set_line_alpha(i, alphas[i])
+
+        self._qtgui_time_sink_x_0_1_win = sip.wrapinstance(self.qtgui_time_sink_x_0_1.pyqwidget(), Qt.QWidget)
+        self.menu_grid_layout_1.addWidget(self._qtgui_time_sink_x_0_1_win, 2, 0, 1, 1)
+        for r in range(2, 3):
+            self.menu_grid_layout_1.setRowStretch(r, 1)
+        for c in range(0, 1):
+            self.menu_grid_layout_1.setColumnStretch(c, 1)
         self.qtgui_time_sink_x_0_0 = qtgui.time_sink_f(
-        	128, #size
-        	samp_rate, #samp_rate
-        	"salida del s-ma LIT", #name
-        	1 #number of inputs
+            1024, #size
+            Rs, #samp_rate
+            "", #name
+            2 #number of inputs
         )
         self.qtgui_time_sink_x_0_0.set_update_time(0.10)
-        self.qtgui_time_sink_x_0_0.set_y_axis(-1.5, 1.5)
+        self.qtgui_time_sink_x_0_0.set_y_axis(-0.5, 1.5)
 
         self.qtgui_time_sink_x_0_0.set_y_label('Amplitude', "")
 
-        self.qtgui_time_sink_x_0_0.enable_tags(-1, True)
+        self.qtgui_time_sink_x_0_0.enable_tags(True)
         self.qtgui_time_sink_x_0_0.set_trigger_mode(qtgui.TRIG_MODE_FREE, qtgui.TRIG_SLOPE_POS, 0.0, 0, 0, "")
         self.qtgui_time_sink_x_0_0.enable_autoscale(False)
         self.qtgui_time_sink_x_0_0.enable_grid(False)
         self.qtgui_time_sink_x_0_0.enable_axis_labels(True)
         self.qtgui_time_sink_x_0_0.enable_control_panel(False)
-        self.qtgui_time_sink_x_0_0.enable_stem_plot(False)
+        self.qtgui_time_sink_x_0_0.enable_stem_plot(True)
 
-        if not True:
-          self.qtgui_time_sink_x_0_0.disable_legend()
 
-        labels = ['', '', '', '', '',
-                  '', '', '', '', '']
-        widths = [3, 1, 1, 1, 1,
-                  1, 1, 1, 1, 1]
-        colors = ["blue", "red", "green", "black", "cyan",
-                  "magenta", "yellow", "dark red", "dark green", "blue"]
-        styles = [1, 1, 1, 1, 1,
-                  1, 1, 1, 1, 1]
-        markers = [-1, -1, -1, -1, -1,
-                   -1, -1, -1, -1, -1]
+        labels = ['Signal 1', 'Signal 2', 'Signal 3', 'Signal 4', 'Signal 5',
+            'Signal 6', 'Signal 7', 'Signal 8', 'Signal 9', 'Signal 10']
+        widths = [1, 1, 1, 1, 1,
+            1, 1, 1, 1, 1]
+        colors = ['blue', 'red', 'green', 'black', 'cyan',
+            'magenta', 'yellow', 'dark red', 'dark green', 'dark blue']
         alphas = [1.0, 1.0, 1.0, 1.0, 1.0,
-                  1.0, 1.0, 1.0, 1.0, 1.0]
+            1.0, 1.0, 1.0, 1.0, 1.0]
+        styles = [1, 1, 1, 1, 1,
+            1, 1, 1, 1, 1]
+        markers = [0, 0, -1, -1, -1,
+            -1, -1, -1, -1, -1]
 
-        for i in xrange(1):
+
+        for i in range(2):
             if len(labels[i]) == 0:
                 self.qtgui_time_sink_x_0_0.set_line_label(i, "Data {0}".format(i))
             else:
@@ -130,19 +249,23 @@ class top_block(gr.top_block, Qt.QWidget):
             self.qtgui_time_sink_x_0_0.set_line_alpha(i, alphas[i])
 
         self._qtgui_time_sink_x_0_0_win = sip.wrapinstance(self.qtgui_time_sink_x_0_0.pyqwidget(), Qt.QWidget)
-        self.top_grid_layout.addWidget(self._qtgui_time_sink_x_0_0_win)
+        self.menu_grid_layout_4.addWidget(self._qtgui_time_sink_x_0_0_win, 1, 0, 1, 1)
+        for r in range(1, 2):
+            self.menu_grid_layout_4.setRowStretch(r, 1)
+        for c in range(0, 1):
+            self.menu_grid_layout_4.setColumnStretch(c, 1)
         self.qtgui_time_sink_x_0 = qtgui.time_sink_f(
-        	int(128/Sps), #size
-        	Rb, #samp_rate
-        	"senal binaria", #name
-        	1 #number of inputs
+            1024, #size
+            Rs, #samp_rate
+            "", #name
+            2 #number of inputs
         )
         self.qtgui_time_sink_x_0.set_update_time(0.10)
-        self.qtgui_time_sink_x_0.set_y_axis(-1.5, 1.5)
+        self.qtgui_time_sink_x_0.set_y_axis(-1, 1)
 
         self.qtgui_time_sink_x_0.set_y_label('Amplitude', "")
 
-        self.qtgui_time_sink_x_0.enable_tags(-1, True)
+        self.qtgui_time_sink_x_0.enable_tags(True)
         self.qtgui_time_sink_x_0.set_trigger_mode(qtgui.TRIG_MODE_FREE, qtgui.TRIG_SLOPE_POS, 0.0, 0, 0, "")
         self.qtgui_time_sink_x_0.enable_autoscale(False)
         self.qtgui_time_sink_x_0.enable_grid(False)
@@ -150,23 +273,22 @@ class top_block(gr.top_block, Qt.QWidget):
         self.qtgui_time_sink_x_0.enable_control_panel(False)
         self.qtgui_time_sink_x_0.enable_stem_plot(True)
 
-        if not True:
-          self.qtgui_time_sink_x_0.disable_legend()
 
-        labels = ['', '', '', '', '',
-                  '', '', '', '', '']
-        widths = [3, 1, 1, 1, 1,
-                  1, 1, 1, 1, 1]
-        colors = ["blue", "red", "green", "black", "cyan",
-                  "magenta", "yellow", "dark red", "dark green", "blue"]
-        styles = [1, 1, 1, 1, 1,
-                  1, 1, 1, 1, 1]
-        markers = [0, -1, -1, -1, -1,
-                   -1, -1, -1, -1, -1]
+        labels = ['Signal 1', 'Signal 2', 'Signal 3', 'Signal 4', 'Signal 5',
+            'Signal 6', 'Signal 7', 'Signal 8', 'Signal 9', 'Signal 10']
+        widths = [1, 1, 1, 1, 1,
+            1, 1, 1, 1, 1]
+        colors = ['blue', 'red', 'green', 'black', 'cyan',
+            'magenta', 'yellow', 'dark red', 'dark green', 'dark blue']
         alphas = [1.0, 1.0, 1.0, 1.0, 1.0,
-                  1.0, 1.0, 1.0, 1.0, 1.0]
+            1.0, 1.0, 1.0, 1.0, 1.0]
+        styles = [1, 1, 1, 1, 1,
+            1, 1, 1, 1, 1]
+        markers = [0, 0, -1, -1, -1,
+            -1, -1, -1, -1, -1]
 
-        for i in xrange(1):
+
+        for i in range(2):
             if len(labels[i]) == 0:
                 self.qtgui_time_sink_x_0.set_line_label(i, "Data {0}".format(i))
             else:
@@ -178,121 +300,405 @@ class top_block(gr.top_block, Qt.QWidget):
             self.qtgui_time_sink_x_0.set_line_alpha(i, alphas[i])
 
         self._qtgui_time_sink_x_0_win = sip.wrapinstance(self.qtgui_time_sink_x_0.pyqwidget(), Qt.QWidget)
-        self.top_grid_layout.addWidget(self._qtgui_time_sink_x_0_win)
-        self.qtgui_freq_sink_x_0 = qtgui.freq_sink_f(
-        	1024, #size
-        	firdes.WIN_BLACKMAN_hARRIS, #wintype
-        	0, #fc
-        	samp_rate, #bw
-        	"", #name
-        	1 #number of inputs
+        self.menu_grid_layout_3.addWidget(self._qtgui_time_sink_x_0_win, 1, 0, 1, 1)
+        for r in range(1, 2):
+            self.menu_grid_layout_3.setRowStretch(r, 1)
+        for c in range(0, 1):
+            self.menu_grid_layout_3.setColumnStretch(c, 1)
+        self.qtgui_const_sink_x_0_0_0_0 = qtgui.const_sink_c(
+            1024, #size
+            "", #name
+            1 #number of inputs
         )
-        self.qtgui_freq_sink_x_0.set_update_time(0.10)
-        self.qtgui_freq_sink_x_0.set_y_axis(-100, 10)
-        self.qtgui_freq_sink_x_0.set_y_label('Relative Gain', 'dB')
-        self.qtgui_freq_sink_x_0.set_trigger_mode(qtgui.TRIG_MODE_FREE, 0.0, 0, "")
-        self.qtgui_freq_sink_x_0.enable_autoscale(False)
-        self.qtgui_freq_sink_x_0.enable_grid(False)
-        self.qtgui_freq_sink_x_0.set_fft_average(0.05)
-        self.qtgui_freq_sink_x_0.enable_axis_labels(True)
-        self.qtgui_freq_sink_x_0.enable_control_panel(False)
+        self.qtgui_const_sink_x_0_0_0_0.set_update_time(0.10)
+        self.qtgui_const_sink_x_0_0_0_0.set_y_axis(-2, 2)
+        self.qtgui_const_sink_x_0_0_0_0.set_x_axis(-2, 2)
+        self.qtgui_const_sink_x_0_0_0_0.set_trigger_mode(qtgui.TRIG_MODE_FREE, qtgui.TRIG_SLOPE_POS, 0.0, 0, "")
+        self.qtgui_const_sink_x_0_0_0_0.enable_autoscale(False)
+        self.qtgui_const_sink_x_0_0_0_0.enable_grid(False)
+        self.qtgui_const_sink_x_0_0_0_0.enable_axis_labels(True)
 
-        if not True:
-          self.qtgui_freq_sink_x_0.disable_legend()
-
-        if "float" == "float" or "float" == "msg_float":
-          self.qtgui_freq_sink_x_0.set_plot_pos_half(not True)
 
         labels = ['', '', '', '', '',
-                  '', '', '', '', '']
+            '', '', '', '', '']
         widths = [1, 1, 1, 1, 1,
-                  1, 1, 1, 1, 1]
-        colors = ["blue", "red", "green", "black", "cyan",
-                  "magenta", "yellow", "dark red", "dark green", "dark blue"]
+            1, 1, 1, 1, 1]
+        colors = ["blue", "red", "red", "red", "red",
+            "red", "red", "red", "red", "red"]
+        styles = [0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0]
+        markers = [0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0]
         alphas = [1.0, 1.0, 1.0, 1.0, 1.0,
-                  1.0, 1.0, 1.0, 1.0, 1.0]
-        for i in xrange(1):
-            if len(labels[i]) == 0:
-                self.qtgui_freq_sink_x_0.set_line_label(i, "Data {0}".format(i))
-            else:
-                self.qtgui_freq_sink_x_0.set_line_label(i, labels[i])
-            self.qtgui_freq_sink_x_0.set_line_width(i, widths[i])
-            self.qtgui_freq_sink_x_0.set_line_color(i, colors[i])
-            self.qtgui_freq_sink_x_0.set_line_alpha(i, alphas[i])
+            1.0, 1.0, 1.0, 1.0, 1.0]
 
-        self._qtgui_freq_sink_x_0_win = sip.wrapinstance(self.qtgui_freq_sink_x_0.pyqwidget(), Qt.QWidget)
-        self.top_grid_layout.addWidget(self._qtgui_freq_sink_x_0_win)
-        self.interp_fir_filter_xxx_0 = filter.interp_fir_filter_fff(Sps, (h))
+        for i in range(1):
+            if len(labels[i]) == 0:
+                self.qtgui_const_sink_x_0_0_0_0.set_line_label(i, "Data {0}".format(i))
+            else:
+                self.qtgui_const_sink_x_0_0_0_0.set_line_label(i, labels[i])
+            self.qtgui_const_sink_x_0_0_0_0.set_line_width(i, widths[i])
+            self.qtgui_const_sink_x_0_0_0_0.set_line_color(i, colors[i])
+            self.qtgui_const_sink_x_0_0_0_0.set_line_style(i, styles[i])
+            self.qtgui_const_sink_x_0_0_0_0.set_line_marker(i, markers[i])
+            self.qtgui_const_sink_x_0_0_0_0.set_line_alpha(i, alphas[i])
+
+        self._qtgui_const_sink_x_0_0_0_0_win = sip.wrapinstance(self.qtgui_const_sink_x_0_0_0_0.pyqwidget(), Qt.QWidget)
+        self.menu_grid_layout_0.addWidget(self._qtgui_const_sink_x_0_0_0_0_win, 2, 1, 1, 1)
+        for r in range(2, 3):
+            self.menu_grid_layout_0.setRowStretch(r, 1)
+        for c in range(1, 2):
+            self.menu_grid_layout_0.setColumnStretch(c, 1)
+        self.qtgui_const_sink_x_0_0_0 = qtgui.const_sink_c(
+            1024, #size
+            "", #name
+            1 #number of inputs
+        )
+        self.qtgui_const_sink_x_0_0_0.set_update_time(0.10)
+        self.qtgui_const_sink_x_0_0_0.set_y_axis(-2, 2)
+        self.qtgui_const_sink_x_0_0_0.set_x_axis(-2, 2)
+        self.qtgui_const_sink_x_0_0_0.set_trigger_mode(qtgui.TRIG_MODE_FREE, qtgui.TRIG_SLOPE_POS, 0.0, 0, "")
+        self.qtgui_const_sink_x_0_0_0.enable_autoscale(False)
+        self.qtgui_const_sink_x_0_0_0.enable_grid(False)
+        self.qtgui_const_sink_x_0_0_0.enable_axis_labels(True)
+
+
+        labels = ['', '', '', '', '',
+            '', '', '', '', '']
+        widths = [1, 1, 1, 1, 1,
+            1, 1, 1, 1, 1]
+        colors = ["blue", "red", "red", "red", "red",
+            "red", "red", "red", "red", "red"]
+        styles = [0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0]
+        markers = [0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0]
+        alphas = [1.0, 1.0, 1.0, 1.0, 1.0,
+            1.0, 1.0, 1.0, 1.0, 1.0]
+
+        for i in range(1):
+            if len(labels[i]) == 0:
+                self.qtgui_const_sink_x_0_0_0.set_line_label(i, "Data {0}".format(i))
+            else:
+                self.qtgui_const_sink_x_0_0_0.set_line_label(i, labels[i])
+            self.qtgui_const_sink_x_0_0_0.set_line_width(i, widths[i])
+            self.qtgui_const_sink_x_0_0_0.set_line_color(i, colors[i])
+            self.qtgui_const_sink_x_0_0_0.set_line_style(i, styles[i])
+            self.qtgui_const_sink_x_0_0_0.set_line_marker(i, markers[i])
+            self.qtgui_const_sink_x_0_0_0.set_line_alpha(i, alphas[i])
+
+        self._qtgui_const_sink_x_0_0_0_win = sip.wrapinstance(self.qtgui_const_sink_x_0_0_0.pyqwidget(), Qt.QWidget)
+        self.menu_grid_layout_0.addWidget(self._qtgui_const_sink_x_0_0_0_win, 2, 0, 1, 1)
+        for r in range(2, 3):
+            self.menu_grid_layout_0.setRowStretch(r, 1)
+        for c in range(0, 1):
+            self.menu_grid_layout_0.setColumnStretch(c, 1)
+        self.qtgui_const_sink_x_0_0 = qtgui.const_sink_c(
+            1024, #size
+            "", #name
+            2 #number of inputs
+        )
+        self.qtgui_const_sink_x_0_0.set_update_time(0.10)
+        self.qtgui_const_sink_x_0_0.set_y_axis(-2, 2)
+        self.qtgui_const_sink_x_0_0.set_x_axis(-2, 2)
+        self.qtgui_const_sink_x_0_0.set_trigger_mode(qtgui.TRIG_MODE_FREE, qtgui.TRIG_SLOPE_POS, 0.0, 0, "")
+        self.qtgui_const_sink_x_0_0.enable_autoscale(False)
+        self.qtgui_const_sink_x_0_0.enable_grid(False)
+        self.qtgui_const_sink_x_0_0.enable_axis_labels(True)
+
+
+        labels = ['', '', '', '', '',
+            '', '', '', '', '']
+        widths = [1, 1, 1, 1, 1,
+            1, 1, 1, 1, 1]
+        colors = ["blue", "red", "red", "red", "red",
+            "red", "red", "red", "red", "red"]
+        styles = [0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0]
+        markers = [0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0]
+        alphas = [1.0, 1.0, 1.0, 1.0, 1.0,
+            1.0, 1.0, 1.0, 1.0, 1.0]
+
+        for i in range(2):
+            if len(labels[i]) == 0:
+                self.qtgui_const_sink_x_0_0.set_line_label(i, "Data {0}".format(i))
+            else:
+                self.qtgui_const_sink_x_0_0.set_line_label(i, labels[i])
+            self.qtgui_const_sink_x_0_0.set_line_width(i, widths[i])
+            self.qtgui_const_sink_x_0_0.set_line_color(i, colors[i])
+            self.qtgui_const_sink_x_0_0.set_line_style(i, styles[i])
+            self.qtgui_const_sink_x_0_0.set_line_marker(i, markers[i])
+            self.qtgui_const_sink_x_0_0.set_line_alpha(i, alphas[i])
+
+        self._qtgui_const_sink_x_0_0_win = sip.wrapinstance(self.qtgui_const_sink_x_0_0.pyqwidget(), Qt.QWidget)
+        self.menu_grid_layout_2.addWidget(self._qtgui_const_sink_x_0_0_win, 1, 0, 1, 1)
+        for r in range(1, 2):
+            self.menu_grid_layout_2.setRowStretch(r, 1)
+        for c in range(0, 1):
+            self.menu_grid_layout_2.setColumnStretch(c, 1)
+        self.qtgui_const_sink_x_0 = qtgui.const_sink_c(
+            1024, #size
+            "", #name
+            2 #number of inputs
+        )
+        self.qtgui_const_sink_x_0.set_update_time(0.10)
+        self.qtgui_const_sink_x_0.set_y_axis(-2, 2)
+        self.qtgui_const_sink_x_0.set_x_axis(-2, 2)
+        self.qtgui_const_sink_x_0.set_trigger_mode(qtgui.TRIG_MODE_FREE, qtgui.TRIG_SLOPE_POS, 0.0, 0, "")
+        self.qtgui_const_sink_x_0.enable_autoscale(False)
+        self.qtgui_const_sink_x_0.enable_grid(False)
+        self.qtgui_const_sink_x_0.enable_axis_labels(True)
+
+
+        labels = ['', '', '', '', '',
+            '', '', '', '', '']
+        widths = [1, 1, 1, 1, 1,
+            1, 1, 1, 1, 1]
+        colors = ["blue", "red", "red", "red", "red",
+            "red", "red", "red", "red", "red"]
+        styles = [1, 1, 0, 0, 0,
+            0, 0, 0, 0, 0]
+        markers = [-1, -1, 0, 0, 0,
+            0, 0, 0, 0, 0]
+        alphas = [1.0, 1.0, 1.0, 1.0, 1.0,
+            1.0, 1.0, 1.0, 1.0, 1.0]
+
+        for i in range(2):
+            if len(labels[i]) == 0:
+                self.qtgui_const_sink_x_0.set_line_label(i, "Data {0}".format(i))
+            else:
+                self.qtgui_const_sink_x_0.set_line_label(i, labels[i])
+            self.qtgui_const_sink_x_0.set_line_width(i, widths[i])
+            self.qtgui_const_sink_x_0.set_line_color(i, colors[i])
+            self.qtgui_const_sink_x_0.set_line_style(i, styles[i])
+            self.qtgui_const_sink_x_0.set_line_marker(i, markers[i])
+            self.qtgui_const_sink_x_0.set_line_alpha(i, alphas[i])
+
+        self._qtgui_const_sink_x_0_win = sip.wrapinstance(self.qtgui_const_sink_x_0.pyqwidget(), Qt.QWidget)
+        self.menu_grid_layout_1.addWidget(self._qtgui_const_sink_x_0_win, 1, 0, 1, 1)
+        for r in range(1, 2):
+            self.menu_grid_layout_1.setRowStretch(r, 1)
+        for c in range(0, 1):
+            self.menu_grid_layout_1.setColumnStretch(c, 1)
+        self.interp_fir_filter_xxx_0_0 = filter.interp_fir_filter_ccc(1, h)
+        self.interp_fir_filter_xxx_0_0.declare_sample_delay(0)
+        self.interp_fir_filter_xxx_0 = filter.interp_fir_filter_ccc(Sps, h)
         self.interp_fir_filter_xxx_0.declare_sample_delay(0)
-        self.blocks_multiply_const_vxx_0 = blocks.multiply_const_vff((2., ))
-        self.blocks_int_to_float_0 = blocks.int_to_float(1, 1)
-        self.blocks_add_xx_0 = blocks.add_vff(1)
-        self.analog_random_source_x_0 = blocks.vector_source_i(map(int, numpy.random.randint(0, 2, 1000)), True)
-        self.analog_const_source_x_0 = analog.sig_source_f(0, analog.GR_CONST_WAVE, 0, 0, -1./2.)
+        self.epy_block_0 = epy_block_0.blk(Sps=Sps)
+        self.e_VCO_fase_fc_0 = e_VCO_fase_fc_0.blk()
+        self.digital_constellation_receiver_cb_0 = digital.constellation_receiver_cb(constelacion.base(), 2*math.pi/1000.0, -0.250, 0.250)
+        self.blocks_unpacked_to_packed_xx_0_1 = blocks.unpacked_to_packed_bb(BpS, gr.GR_MSB_FIRST)
+        self.blocks_unpack_k_bits_bb_0 = blocks.unpack_k_bits_bb(8)
+        self.blocks_throttle_0 = blocks.throttle(gr.sizeof_gr_complex*1, samp_rate,True)
+        self.blocks_packed_to_unpacked_xx_0_0 = blocks.packed_to_unpacked_bb(BpS, gr.GR_MSB_FIRST)
+        self.blocks_pack_k_bits_bb_0_0_0 = blocks.pack_k_bits_bb(8)
+        self.blocks_null_sink_0 = blocks.null_sink(gr.sizeof_char*1)
+        self.blocks_multiply_const_vxx_0_0 = blocks.multiply_const_ff((2*math.pi)/M)
+        self.blocks_multiply_const_vxx_0 = blocks.multiply_const_cc(1/Sps)
+        self.blocks_delay_1 = blocks.delay(gr.sizeof_float*1, Retardo_bits)
+        self.blocks_delay_0 = blocks.delay(gr.sizeof_gr_complex*1, Retardo_Timing)
+        self.blocks_char_to_float_0_2 = blocks.char_to_float(1, 1)
+        self.blocks_char_to_float_0_1 = blocks.char_to_float(1, 1)
+        self.blocks_char_to_float_0_0_0 = blocks.char_to_float(1, 1)
+        self.blocks_char_to_float_0_0 = blocks.char_to_float(1, 1)
+        self.blocks_char_to_float_0 = blocks.char_to_float(1, 1)
+        self.blocks_add_xx_0 = blocks.add_vcc(1)
+        self.b_Eye_Diagram_simple_c_0 = b_Eye_Diagram_simple_c(
+            AlphaLineas=0.5,
+            Delay_i=0,
+            GrosorLineas=20,
+            Kint=1,
+            N_eyes=2,
+            Samprate1=samp_rate,
+            Sps1=Sps,
+            Title="Eye Diagramm",
+            Ymax=2,
+            Ymin=-2,
+        )
+
+        self.menu_grid_layout_0.addWidget(self.b_Eye_Diagram_simple_c_0, 1, 0, 1, 2)
+        for r in range(1, 2):
+            self.menu_grid_layout_0.setRowStretch(r, 1)
+        for c in range(0, 2):
+            self.menu_grid_layout_0.setColumnStretch(c, 1)
+        self.analog_random_source_x_0 = blocks.vector_source_b(list(map(int, numpy.random.randint(0, 2, 10000000))), True)
+        self.analog_noise_source_x_0 = analog.noise_source_c(analog.GR_GAUSSIAN, 0.1, 0)
+        self.analog_const_source_x_0_0_0 = analog.sig_source_f(0, analog.GR_CONST_WAVE, 0, 0, 1)
 
 
 
         ##################################################
         # Connections
         ##################################################
-        self.connect((self.analog_const_source_x_0, 0), (self.blocks_add_xx_0, 0))
-        self.connect((self.analog_random_source_x_0, 0), (self.blocks_int_to_float_0, 0))
-        self.connect((self.blocks_add_xx_0, 0), (self.blocks_multiply_const_vxx_0, 0))
-        self.connect((self.blocks_int_to_float_0, 0), (self.blocks_add_xx_0, 1))
-        self.connect((self.blocks_multiply_const_vxx_0, 0), (self.interp_fir_filter_xxx_0, 0))
-        self.connect((self.blocks_multiply_const_vxx_0, 0), (self.qtgui_time_sink_x_0, 0))
-        self.connect((self.interp_fir_filter_xxx_0, 0), (self.qtgui_freq_sink_x_0, 0))
-        self.connect((self.interp_fir_filter_xxx_0, 0), (self.qtgui_time_sink_x_0_0, 0))
+        self.connect((self.analog_const_source_x_0_0_0, 0), (self.e_VCO_fase_fc_0, 1))
+        self.connect((self.analog_noise_source_x_0, 0), (self.blocks_add_xx_0, 0))
+        self.connect((self.analog_random_source_x_0, 0), (self.blocks_char_to_float_0_1, 0))
+        self.connect((self.analog_random_source_x_0, 0), (self.blocks_pack_k_bits_bb_0_0_0, 0))
+        self.connect((self.blocks_add_xx_0, 0), (self.interp_fir_filter_xxx_0_0, 0))
+        self.connect((self.blocks_add_xx_0, 0), (self.qtgui_const_sink_x_0, 0))
+        self.connect((self.blocks_add_xx_0, 0), (self.qtgui_time_sink_x_0_1, 1))
+        self.connect((self.blocks_char_to_float_0, 0), (self.qtgui_time_sink_x_0, 0))
+        self.connect((self.blocks_char_to_float_0_0, 0), (self.qtgui_time_sink_x_0, 1))
+        self.connect((self.blocks_char_to_float_0_0_0, 0), (self.qtgui_time_sink_x_0_0, 1))
+        self.connect((self.blocks_char_to_float_0_1, 0), (self.blocks_delay_1, 0))
+        self.connect((self.blocks_char_to_float_0_2, 0), (self.blocks_multiply_const_vxx_0_0, 0))
+        self.connect((self.blocks_delay_0, 0), (self.b_Eye_Diagram_simple_c_0, 0))
+        self.connect((self.blocks_delay_0, 0), (self.epy_block_0, 0))
+        self.connect((self.blocks_delay_0, 0), (self.qtgui_const_sink_x_0_0_0, 0))
+        self.connect((self.blocks_delay_1, 0), (self.qtgui_time_sink_x_0_0, 0))
+        self.connect((self.blocks_multiply_const_vxx_0, 0), (self.blocks_delay_0, 0))
+        self.connect((self.blocks_multiply_const_vxx_0_0, 0), (self.e_VCO_fase_fc_0, 0))
+        self.connect((self.blocks_pack_k_bits_bb_0_0_0, 0), (self.blocks_packed_to_unpacked_xx_0_0, 0))
+        self.connect((self.blocks_packed_to_unpacked_xx_0_0, 0), (self.blocks_char_to_float_0, 0))
+        self.connect((self.blocks_packed_to_unpacked_xx_0_0, 0), (self.blocks_char_to_float_0_2, 0))
+        self.connect((self.blocks_throttle_0, 0), (self.blocks_add_xx_0, 1))
+        self.connect((self.blocks_unpack_k_bits_bb_0, 0), (self.blocks_char_to_float_0_0_0, 0))
+        self.connect((self.blocks_unpack_k_bits_bb_0, 0), (self.blocks_null_sink_0, 0))
+        self.connect((self.blocks_unpacked_to_packed_xx_0_1, 0), (self.blocks_unpack_k_bits_bb_0, 0))
+        self.connect((self.digital_constellation_receiver_cb_0, 0), (self.blocks_char_to_float_0_0, 0))
+        self.connect((self.digital_constellation_receiver_cb_0, 0), (self.blocks_unpacked_to_packed_xx_0_1, 0))
+        self.connect((self.e_VCO_fase_fc_0, 0), (self.interp_fir_filter_xxx_0, 0))
+        self.connect((self.e_VCO_fase_fc_0, 0), (self.qtgui_const_sink_x_0_0, 0))
+        self.connect((self.epy_block_0, 0), (self.digital_constellation_receiver_cb_0, 0))
+        self.connect((self.epy_block_0, 0), (self.qtgui_const_sink_x_0_0, 1))
+        self.connect((self.epy_block_0, 0), (self.qtgui_const_sink_x_0_0_0_0, 0))
+        self.connect((self.interp_fir_filter_xxx_0, 0), (self.blocks_throttle_0, 0))
+        self.connect((self.interp_fir_filter_xxx_0, 0), (self.qtgui_const_sink_x_0, 1))
+        self.connect((self.interp_fir_filter_xxx_0, 0), (self.qtgui_time_sink_x_0_1, 0))
+        self.connect((self.interp_fir_filter_xxx_0_0, 0), (self.blocks_multiply_const_vxx_0, 0))
 
     def closeEvent(self, event):
         self.settings = Qt.QSettings("GNU Radio", "top_block")
         self.settings.setValue("geometry", self.saveGeometry())
         event.accept()
 
-    def get_Sps(self):
-        return self.Sps
+    def get_samp_rate_2920_rx(self):
+        return self.samp_rate_2920_rx
 
-    def set_Sps(self, Sps):
-        self.Sps = Sps
-        self.set_samp_rate(self.Rb*self.Sps)
+    def set_samp_rate_2920_rx(self, samp_rate_2920_rx):
+        self.samp_rate_2920_rx = samp_rate_2920_rx
+        self.set_samp_rate(int(self.samp_rate_2920_rx/self.coef_rx))
 
-    def get_Rb(self):
-        return self.Rb
+    def get_coef_rx(self):
+        return self.coef_rx
 
-    def set_Rb(self, Rb):
-        self.Rb = Rb
-        self.set_samp_rate(self.Rb*self.Sps)
-        self.qtgui_time_sink_x_0.set_samp_rate(self.Rb)
+    def set_coef_rx(self, coef_rx):
+        self.coef_rx = coef_rx
+        self.set_samp_rate(int(self.samp_rate_2920_rx/self.coef_rx))
 
     def get_samp_rate(self):
         return self.samp_rate
 
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
-        self.qtgui_time_sink_x_0_0.set_samp_rate(self.samp_rate)
-        self.qtgui_freq_sink_x_0.set_frequency_range(0, self.samp_rate)
+        self.set_Rs(self.samp_rate/self.Sps)
+        self.b_Eye_Diagram_simple_c_0.set_Samprate1(self.samp_rate)
+        self.blocks_throttle_0.set_sample_rate(self.samp_rate)
+        self.qtgui_time_sink_x_0_1.set_samp_rate(self.samp_rate)
 
-    def get_run_stop(self):
-        return self.run_stop
+    def get_Sps(self):
+        return self.Sps
 
-    def set_run_stop(self, run_stop):
-        self.run_stop = run_stop
-        if self.run_stop: self.start()
-        else: self.stop(); self.wait()
-        self._run_stop_callback(self.run_stop)
+    def set_Sps(self, Sps):
+        self.Sps = Sps
+        self.set_Rs(self.samp_rate/self.Sps)
+        self.set_h(wform.rect(self.Sps))
+        self.set_ntaps(self.Sps*16)
+        self.b_Eye_Diagram_simple_c_0.set_Sps1(self.Sps)
+        self.blocks_multiply_const_vxx_0.set_k(1/self.Sps)
+        self.epy_block_0.Sps = self.Sps
+
+    def get_M(self):
+        return self.M
+
+    def set_M(self, M):
+        self.M = M
+        self.set_BpS(int(math.log(self.M,2)))
+        self.set_constelacion(digital.psk_constellation(self.M,self.no_code,False))
+        self.blocks_multiply_const_vxx_0_0.set_k((2*math.pi)/self.M)
+
+    def get_Rs(self):
+        return self.Rs
+
+    def set_Rs(self, Rs):
+        self.Rs = Rs
+        self.set_Rb(self.Rs/self.BpS)
+        self.qtgui_time_sink_x_0.set_samp_rate(self.Rs)
+        self.qtgui_time_sink_x_0_0.set_samp_rate(self.Rs)
+
+    def get_BpS(self):
+        return self.BpS
+
+    def set_BpS(self, BpS):
+        self.BpS = BpS
+        self.set_Rb(self.Rs/self.BpS)
+
+    def get_no_code(self):
+        return self.no_code
+
+    def set_no_code(self, no_code):
+        self.no_code = no_code
+        self.set_constelacion(digital.psk_constellation(self.M,self.no_code,False))
+
+    def get_Rb(self):
+        return self.Rb
+
+    def set_Rb(self, Rb):
+        self.Rb = Rb
+        self.set_W(self.Rb/2)
+
+    def get_ntaps(self):
+        return self.ntaps
+
+    def set_ntaps(self, ntaps):
+        self.ntaps = ntaps
 
     def get_h(self):
         return self.h
 
     def set_h(self, h):
         self.h = h
-        self.interp_fir_filter_xxx_0.set_taps((self.h))
+        self.interp_fir_filter_xxx_0.set_taps(self.h)
+        self.interp_fir_filter_xxx_0_0.set_taps(self.h)
+
+    def get_constelacion(self):
+        return self.constelacion
+
+    def set_constelacion(self, constelacion):
+        self.constelacion = constelacion
+
+    def get_W(self):
+        return self.W
+
+    def set_W(self, W):
+        self.W = W
+
+    def get_Rolloff(self):
+        return self.Rolloff
+
+    def set_Rolloff(self, Rolloff):
+        self.Rolloff = Rolloff
+
+    def get_Retardo_bits(self):
+        return self.Retardo_bits
+
+    def set_Retardo_bits(self, Retardo_bits):
+        self.Retardo_bits = Retardo_bits
+        self.blocks_delay_1.set_dly(self.Retardo_bits)
+
+    def get_Retardo_Timing(self):
+        return self.Retardo_Timing
+
+    def set_Retardo_Timing(self, Retardo_Timing):
+        self.Retardo_Timing = Retardo_Timing
+        self.blocks_delay_0.set_dly(self.Retardo_Timing)
+
 
 
 def main(top_block_cls=top_block, options=None):
 
-    from distutils.version import StrictVersion
-    if StrictVersion(Qt.qVersion()) >= StrictVersion("4.5.0"):
+    if StrictVersion("4.5.0") <= StrictVersion(Qt.qVersion()) < StrictVersion("5.0.0"):
         style = gr.prefs().get_string('qtgui', 'style', 'raster')
         Qt.QApplication.setGraphicsSystem(style)
     qapp = Qt.QApplication(sys.argv)
@@ -301,10 +707,20 @@ def main(top_block_cls=top_block, options=None):
     tb.start()
     tb.show()
 
+    def sig_handler(sig=None, frame=None):
+        Qt.QApplication.quit()
+
+    signal.signal(signal.SIGINT, sig_handler)
+    signal.signal(signal.SIGTERM, sig_handler)
+
+    timer = Qt.QTimer()
+    timer.start(500)
+    timer.timeout.connect(lambda: None)
+
     def quitting():
         tb.stop()
         tb.wait()
-    qapp.connect(qapp, Qt.SIGNAL("aboutToQuit()"), quitting)
+    qapp.aboutToQuit.connect(quitting)
     qapp.exec_()
 
 
